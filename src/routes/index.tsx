@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type * as React from "react";
 import Link from "@/components/app-link";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";

@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -10,28 +9,40 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import Link from "@/components/app-link";
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { SectionHeading } from "@/components/layout/section-heading";
+import { SkipLink } from "@/components/layout/skip-link";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { Button } from "@/components/ui/button";
+import { site } from "@/lib/site";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+    <Section>
+      <Container>
+        <SectionHeading
+          as="h1"
+          title="We can't find that page"
+          description="The link may be out of date or the page may have moved. Try one of these instead."
+        />
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/">Go to the home page</Link>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link href="/programs">View programs</Link>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link href="/contact">Contact the academy</Link>
+          </Button>
         </div>
-      </div>
-    </div>
+      </Container>
+    </Section>
   );
 }
 
@@ -43,33 +54,28 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
+    <Section>
+      <Container>
+        <SectionHeading
+          as="h1"
+          title="Something went wrong on our side"
+          description="Try again, or contact the academy if the problem continues."
+        />
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link href="/contact">Contact the academy</Link>
+          </Button>
         </div>
-      </div>
-    </div>
+      </Container>
+    </Section>
   );
 }
 
@@ -78,14 +84,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "theme-color", content: "#0e3b2c" },
+      { title: site.name },
+      { name: "description", content: site.tagline },
+      { name: "application-name", content: site.name },
+      { property: "og:site_name", content: site.name },
+      { property: "og:locale", content: "en_UG" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -107,8 +113,13 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="flex min-h-dvh flex-col">
+        <SkipLink />
+        <SiteHeader />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <SiteFooter />
         <Scripts />
       </body>
     </html>
