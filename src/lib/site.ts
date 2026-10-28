@@ -7,7 +7,7 @@ export const site = {
   shortName: "Mwenge",
   descriptor: "Golf Academy",
   tagline: "A grassroots golf and youth-development initiative in Uganda.",
-  url: (import.meta.env.VITE_SITE_URL as string | undefined) ?? "https://mwenge-golf-academy.lovable.app",
+  url: (import.meta.env["VITE_SITE_URL"] as string | undefined) ?? "https://mwenge-golf-academy.lovable.app",
   locale: "en",
   contact: {
     email: null as string | null,

@@ -10,7 +10,7 @@ export interface MediaRef {
   credit?: string;
   licenseRef?: string;
   /** Focal point as percentages (0-100) so crops adapt to each aspect ratio. */
-  focal?: { x: number; y: number };
+  focal?: { x: number; y: number } | undefined;
   width?: number;
   height?: number;
   blurDataURL?: string;

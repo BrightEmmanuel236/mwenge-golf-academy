@@ -8,7 +8,8 @@ const builtRoutes = new Set(["/", "/style-guide"]);
 
 const Link = React.forwardRef<HTMLAnchorElement, Props>(function Link({ href, ...rest }, ref) {
   if (builtRoutes.has(href)) {
-    return <RouterLink ref={ref} to={href as "/"} {...rest} />;
+    const { target, ...linkRest } = rest;
+    return <RouterLink ref={ref} to={href as "/"} {...(target ? { target } : {})} {...linkRest} />;
   }
   return <a ref={ref} href={href} {...rest} />;
 });
