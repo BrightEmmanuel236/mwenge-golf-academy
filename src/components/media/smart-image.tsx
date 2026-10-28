@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { MediaSource } from "@/lib/content/media";
 
@@ -89,7 +88,6 @@ export function SmartImage(props: SmartImageProps) {
   } = props;
   const config = roles[role];
   const alt = props.decorative ? "" : props.alt;
-  const isSvg = src?.endsWith(".svg") ?? false;
 
   return (
     <div
@@ -101,18 +99,18 @@ export function SmartImage(props: SmartImageProps) {
       )}
     >
       {src ? (
-        <Image
+        <img
           src={src}
           alt={alt}
-          fill
           sizes={props.sizes ?? config.sizes}
-          priority={priority}
-          quality={80}
-          unoptimized={isSvg}
-          placeholder={blurDataURL ? "blur" : "empty"}
-          blurDataURL={blurDataURL}
-          className="object-cover"
-          style={{ objectPosition: `${focal.x}% ${focal.y}%` }}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{
+            objectPosition: `${focal.x}% ${focal.y}%`,
+            ...(blurDataURL ? { backgroundImage: `url(${blurDataURL})`, backgroundSize: "cover" } : {}),
+          }}
         />
       ) : (
         <div className="text-slate absolute inset-0 flex items-center justify-center p-6 text-center text-sm">
