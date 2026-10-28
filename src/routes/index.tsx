@@ -1,24 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type * as React from "react";
+import Link from "@/components/app-link";
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { SectionHeading } from "@/components/layout/section-heading";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
+// F0 holding page: the real Home page is built in F1. Not indexed.
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function HomePage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <Section>
+      <Container>
+        <SectionHeading
+          as="h1"
+          title="Front end foundation is in place"
+          description="This is a temporary page. The Home page is built in phase F1. Review the design system and shared components on the style guide."
+        />
+        <div className="mt-10">
+          <Button asChild variant="dark">
+            <Link href="/style-guide">Open the style guide</Link>
+          </Button>
+        </div>
+      </Container>
+    </Section>
   );
 }
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Mwenge Golf Academy" },
+      { name: "description", content: "A grassroots golf and youth-development initiative in Uganda." },
+      { name: "robots", content: "noindex, nofollow" },
+      { property: "og:title", content: "Mwenge Golf Academy" },
+      { property: "og:description", content: "A grassroots golf and youth-development initiative in Uganda." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: HomePage,
+});
