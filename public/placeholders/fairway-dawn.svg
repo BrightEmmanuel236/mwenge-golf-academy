@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9e2cf"/><stop offset="0.65" stop-color="#f3d9a2"/><stop offset="1" stop-color="#f6e6bd"/>
+    </linearGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c7a58"/><stop offset="1" stop-color="#2a5f44"/></linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f6b4a"/><stop offset="1" stop-color="#174f38"/></linearGradient>
+    <linearGradient id="near" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14503a"/><stop offset="1" stop-color="#0a2f1d"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1120" cy="430" r="120" fill="#e3bf6a" opacity="0.85"/>
+  <path d="M0 520 C 260 440 480 500 760 470 S 1260 430 1600 500 V900 H0Z" fill="url(#far)"/>
+  <path d="M0 600 C 300 540 560 620 880 580 S 1380 540 1600 600 V900 H0Z" fill="url(#mid)"/>
+  <path d="M0 720 C 340 660 620 760 960 720 S 1420 690 1600 740 V900 H0Z" fill="url(#near)"/>
+  <g stroke="#faf8f3" stroke-width="3" stroke-linecap="round"><path d="M520 640 V560"/></g>
+  <path d="M520 560 l46 16 l-46 16z" fill="#c9a24a"/>
+</svg>

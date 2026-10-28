@@ -1,0 +1,8 @@
+[
+ {"capability":"code (pages, components, content rules)","source":"Next.js app","outcome":"migrate","status":"verified","next_action":null},
+ {"capability":"tests","source":"vitest","outcome":"migrate","status":"verified","next_action":null},
+ {"capability":"database/records","source":"none (planned Supabase, not built)","outcome":"none","status":"verified","next_action":null},
+ {"capability":"auth","source":"none","outcome":"none","status":"verified","next_action":null},
+ {"capability":"forms","source":"schemas only, no submission","outcome":"migrate","status":"verified","next_action":"Back-end phase"},
+ {"capability":"security headers","source":"next.config","outcome":"dropped","status":"accepted","next_action":"Hosting-level"}
+]
