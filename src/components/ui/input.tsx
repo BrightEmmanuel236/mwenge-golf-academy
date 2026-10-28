@@ -1,22 +1,28 @@
 import * as React from "react";
-
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className,
-        )}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
-);
-Input.displayName = "Input";
+export const fieldControlClass =
+  "w-full rounded-md border border-field bg-white px-4 text-base text-ink placeholder:text-slate/70 transition-colors duration-200 hover:border-fairway focus-visible:border-fairway aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:bg-sand disabled:opacity-70";
 
-export { Input };
+export function Input({ className, type = "text", ...props }: React.ComponentProps<"input">) {
+  return <input type={type} className={cn(fieldControlClass, "h-12", className)} {...props} />;
+}
+
+export function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
+  return <textarea className={cn(fieldControlClass, "min-h-32 py-3", className)} {...props} />;
+}
+
+export function Select({ className, children, ...props }: React.ComponentProps<"select">) {
+  return (
+    <div className="relative">
+      <select className={cn(fieldControlClass, "h-12 appearance-none pr-11", className)} {...props}>
+        {children}
+      </select>
+      <ChevronDown
+        className="text-slate pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
