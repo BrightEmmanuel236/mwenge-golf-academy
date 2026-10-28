@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Internal links go through `@/components/app-link` (href-based); add a path to its `builtRoutes` set when its route file exists, so unbuilt pages stay plain links until then.
+- Colour tokens in `src/styles.css` stay hex: `src/test/mwenge/contrast.test.ts` parses them for WCAG checks.
