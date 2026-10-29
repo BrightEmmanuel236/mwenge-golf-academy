@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Link from "@/components/app-link";
 import { usePathname } from "@/hooks/use-pathname";
@@ -29,14 +28,14 @@ export function MobileMenu() {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Content
-          data-surface="dark"
           aria-describedby={undefined}
           className="bg-night text-ivory fixed inset-0 z-50 flex flex-col overflow-y-auto"
         >
           <Dialog.Title className="sr-only">Site menu</Dialog.Title>
-          <div className="flex h-[72px] shrink-0 items-center justify-between px-5 sm:px-8">
+          {/* Top bar matches the site header so the official logo sits on its intended light background. */}
+          <div className="bg-ivory text-fairway flex h-[76px] shrink-0 items-center justify-between px-5 sm:px-8">
             <Link href="/" aria-label="Mwenge Golf Academy, home">
-              <Logo tone="dark" />
+              <Logo className="h-[60px]" />
             </Link>
             <Dialog.Close asChild>
               <button
@@ -49,7 +48,7 @@ export function MobileMenu() {
             </Dialog.Close>
           </div>
 
-          <nav aria-label="Mobile" className="flex-1 px-5 pb-8 sm:px-8">
+          <nav aria-label="Mobile" data-surface="dark" className="flex-1 px-5 pt-4 pb-8 sm:px-8">
             <ul className="divide-ivory/15 flex flex-col divide-y">
               {primaryNav.map((item) =>
                 isGroup(item) ? (

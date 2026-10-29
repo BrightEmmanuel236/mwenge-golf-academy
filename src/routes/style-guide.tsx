@@ -12,7 +12,6 @@ import { Field } from "@/components/ui/field";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { swatches } from "@/lib/design/swatches";
 
-
 const imageRoles: { role: ImageRole; note: string; src: string }[] = [
   {
     role: "hero",
@@ -76,15 +75,10 @@ function StyleGuidePage() {
                   key={swatch.token}
                   className="border-line overflow-hidden rounded-md border bg-white"
                 >
-                  <div
-                    className={`${swatch.bg} flex h-20 items-end p-3 text-sm font-medium ${
-                      swatch.lightText ? "text-ivory" : "text-night"
-                    }`}
-                  >
-                    {swatch.hex}
-                  </div>
+                  <div aria-hidden="true" className={`${swatch.bg} h-20`} />
                   <div className="p-4">
                     <p className="font-medium">{swatch.name}</p>
+                    <p className="text-sm text-slate">{swatch.hex}</p>
                     <p className="text-slate text-sm">{swatch.use}</p>
                   </div>
                 </li>
@@ -281,10 +275,16 @@ export const Route = createFileRoute("/style-guide")({
   head: () => ({
     meta: [
       { title: "Style guide | Mwenge Golf Academy" },
-      { name: "description", content: "Design system and shared components for the Mwenge Golf Academy website." },
+      {
+        name: "description",
+        content: "Design system and shared components for the Mwenge Golf Academy website.",
+      },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "Style guide | Mwenge Golf Academy" },
-      { property: "og:description", content: "Design system and shared components for the Mwenge Golf Academy website." },
+      {
+        property: "og:description",
+        content: "Design system and shared components for the Mwenge Golf Academy website.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

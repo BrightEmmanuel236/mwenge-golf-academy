@@ -9,13 +9,13 @@
   tests/contrast.test.ts parses it to verify accessible contrast of every pairing in use.
 */
 @theme {
-  --color-night: #08261c;
-  --color-fairway: #0e3b2c;
-  --color-canopy: #1f6b4a;
-  --color-gold: #c9a24a;
-  --color-gold-bright: #d6b25f;
-  --color-gold-deep: #bf9941;
-  --color-gold-ink: #8a6a1f;
+  --color-night: #052517;
+  --color-fairway: #0a3b23;
+  --color-canopy: #1f6b43;
+  --color-gold: #d4a02a;
+  --color-gold-bright: #e0b042;
+  --color-gold-deep: #c9972a;
+  --color-gold-ink: #8a6200;
   --color-earth: #b5532f;
   --color-ivory: #faf8f3;
   --color-sand: #f0ece2;
@@ -35,7 +35,7 @@
   --radius-sm: 2px;
   --radius-md: 4px;
 
-  --shadow-raised: 0 8px 24px rgb(8 38 28 / 0.08);
+  --shadow-raised: 0 8px 24px rgb(5 37 23 / 0.08);
 }
 
 @layer base {

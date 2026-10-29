@@ -1,4 +1,4 @@
-/** Palette shown on the style guide. Tests verify these match the CSS tokens in globals.css. */
+/** Palette shown on the style guide. Tests verify these match the CSS tokens in styles.css. */
 export interface Swatch {
   token: string; // CSS variable name without the leading --color-
   name: string;
@@ -13,7 +13,7 @@ export const swatches: Swatch[] = [
   {
     token: "night",
     name: "Course Night",
-    hex: "#08261c",
+    hex: "#052517",
     use: "Overlays, footer, deepest surfaces",
     bg: "bg-night",
     lightText: true,
@@ -21,7 +21,7 @@ export const swatches: Swatch[] = [
   {
     token: "fairway",
     name: "Fairway Green",
-    hex: "#0e3b2c",
+    hex: "#0a3b23",
     use: "Primary: dark sections, buttons",
     bg: "bg-fairway",
     lightText: true,
@@ -29,7 +29,7 @@ export const swatches: Swatch[] = [
   {
     token: "canopy",
     name: "Canopy",
-    hex: "#1f6b4a",
+    hex: "#1f6b43",
     use: "Links and focus on light surfaces",
     bg: "bg-canopy",
     lightText: true,
@@ -37,7 +37,7 @@ export const swatches: Swatch[] = [
   {
     token: "gold",
     name: "Muted Gold",
-    hex: "#c9a24a",
+    hex: "#d4a02a",
     use: "Call-to-action fill, rules, text on dark",
     bg: "bg-gold",
     lightText: false,
@@ -45,8 +45,8 @@ export const swatches: Swatch[] = [
   {
     token: "gold-ink",
     name: "Antique Gold",
-    hex: "#8a6a1f",
-    use: "Gold-toned text on ivory only",
+    hex: "#8a6200",
+    use: "Gold-toned text on ivory and sand",
     bg: "bg-gold-ink",
     lightText: true,
   },
