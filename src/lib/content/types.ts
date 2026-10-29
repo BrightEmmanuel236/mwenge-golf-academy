@@ -8,6 +8,9 @@ export interface Program {
   title: string;
   audience: Audience;
   summary: string;
+  /** Longer description, one paragraph per entry. */
+  description?: string[];
+  whoFor?: string;
   level?: string;
   duration?: string;
   schedulePattern?: string;

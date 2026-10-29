@@ -28,7 +28,13 @@ export const programs: Program[] = [
     title: "Junior program (sample)",
     audience: "junior",
     summary:
-      "Sample summary. Replace with the academy's approved description of its junior program.",
+      "Sample summary. Replace with the academy’s approved description of its junior program.",
+    description: [
+      "Sample description. This paragraph stands in for the academy’s real program description so the page layout can be reviewed.",
+      "Replace with approved wording covering what is taught, how sessions run and what young golfers can expect.",
+    ],
+    whoFor:
+      "Sample audience note. Replace with the ages and experience levels the program is designed for.",
     priceUgx: null,
     priceUsd: null,
     image: placeholder(
@@ -44,7 +50,8 @@ export const programs: Program[] = [
     title: "Adult program (sample)",
     audience: "adult",
     summary:
-      "Sample summary. Replace with the academy's approved description of its adult program.",
+      "Sample summary. Replace with the academy’s approved description of its adult program.",
+    description: ["Sample description. Replace with approved wording for the adult program."],
     priceUgx: null,
     priceUsd: null,
     image: placeholder(
@@ -60,7 +67,10 @@ export const programs: Program[] = [
     title: "Corporate program (sample)",
     audience: "corporate",
     summary:
-      "Sample summary. Replace with the academy's approved description of its corporate offering.",
+      "Sample summary. Replace with the academy’s approved description of its corporate offering.",
+    description: [
+      "Sample description. Replace with approved wording for corporate training and events.",
+    ],
     priceUgx: null,
     priceUsd: null,
     image: placeholder("/placeholders/clubs-detail.svg", "Abstract illustration of golf clubs"),

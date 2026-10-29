@@ -55,7 +55,7 @@ type SmartImageProps = AltProps & {
   /** Overrides the default `sizes` for the role. */
   sizes?: string;
   /** Dark gradient so text placed over the image stays legible. */
-  overlay?: "none" | "bottom" | "full";
+  overlay?: "none" | "bottom" | "hero" | "full";
   blurDataURL?: string;
   className?: string;
   /** Message shown when `src` is null. */
@@ -66,6 +66,8 @@ const overlays = {
   none: "",
   bottom:
     "after:absolute after:inset-0 after:bg-gradient-to-t after:from-night/65 after:via-night/20 after:to-transparent",
+  /** Guarantees legible light text over any photograph (headline area stays above ~4.5:1). */
+  hero: "after:absolute after:inset-0 after:bg-gradient-to-t after:from-night/90 after:via-night/65 after:to-night/35",
   full: "after:absolute after:inset-0 after:bg-night/55",
 } as const;
 
