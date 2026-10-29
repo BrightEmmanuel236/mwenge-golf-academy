@@ -26,3 +26,13 @@ export function Select({ className, children, ...props }: React.ComponentProps<"
     </div>
   );
 }
+
+export function Checkbox({ className, ...props }: Omit<React.ComponentProps<"input">, "type">) {
+  return (
+    <input
+      type="checkbox"
+      className={cn("mt-0.5 size-5 shrink-0 rounded-sm border border-field accent-fairway", className)}
+      {...props}
+    />
+  );
+}
