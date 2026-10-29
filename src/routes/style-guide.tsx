@@ -76,15 +76,10 @@ function StyleGuidePage() {
                   key={swatch.token}
                   className="border-line overflow-hidden rounded-md border bg-white"
                 >
-                  <div
-                    className={`${swatch.bg} flex h-20 items-end p-3 text-sm font-medium ${
-                      swatch.lightText ? "text-ivory" : "text-night"
-                    }`}
-                  >
-                    {swatch.hex}
-                  </div>
+                  <div aria-hidden="true" className={`${swatch.bg} h-20`} />
                   <div className="p-4">
                     <p className="font-medium">{swatch.name}</p>
+                    <p className="text-sm text-slate">{swatch.hex}</p>
                     <p className="text-slate text-sm">{swatch.use}</p>
                   </div>
                 </li>

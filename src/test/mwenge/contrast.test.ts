@@ -48,8 +48,9 @@ describe("palette contrast (WCAG 2.1 AA)", () => {
     expect(contrast(t["gold"]!, t["night"]!)).toBeGreaterThanOrEqual(3);
   });
 
-  it("documents known limits: antique gold text is NOT safe on sand", () => {
-    expect(contrast(t["gold-ink"]!, t["sand"]!)).toBeLessThan(4.5);
+  it("antique gold text is safe on both ivory and sand", () => {
+    expect(contrast(t["gold-ink"]!, t["ivory"]!)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(t["gold-ink"]!, t["sand"]!)).toBeGreaterThanOrEqual(4.5);
   });
 
   it("style guide swatches match the CSS tokens", () => {

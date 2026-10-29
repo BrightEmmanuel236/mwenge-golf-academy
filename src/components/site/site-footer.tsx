@@ -38,7 +38,7 @@ export function SiteFooter() {
       <Container className="py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="flex max-w-sm flex-col gap-5">
-            <Logo tone="dark" />
+            <Logo surface="dark" className="h-28 self-start" />
             <p className="text-ivory/85 text-[0.9375rem]">{site.tagline}</p>
           </div>
           <FooterList title="Explore" links={footerNav.explore} />
