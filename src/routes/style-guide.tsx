@@ -12,7 +12,6 @@ import { Field } from "@/components/ui/field";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { swatches } from "@/lib/design/swatches";
 
-
 const imageRoles: { role: ImageRole; note: string; src: string }[] = [
   {
     role: "hero",
@@ -276,10 +275,16 @@ export const Route = createFileRoute("/style-guide")({
   head: () => ({
     meta: [
       { title: "Style guide | Mwenge Golf Academy" },
-      { name: "description", content: "Design system and shared components for the Mwenge Golf Academy website." },
+      {
+        name: "description",
+        content: "Design system and shared components for the Mwenge Golf Academy website.",
+      },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "Style guide | Mwenge Golf Academy" },
-      { property: "og:description", content: "Design system and shared components for the Mwenge Golf Academy website." },
+      {
+        property: "og:description",
+        content: "Design system and shared components for the Mwenge Golf Academy website.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
