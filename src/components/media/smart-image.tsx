@@ -49,17 +49,17 @@ type SmartImageProps = AltProps & {
   role: ImageRole;
   source: MediaSource;
   /** Focal point percentages; keeps faces and key subjects in frame at every crop. */
-  focal?: { x: number; y: number };
+  focal?: { x: number; y: number } | undefined;
   /** Hero images: preload and load eagerly. All other images lazy-load. */
-  priority?: boolean;
+  priority?: boolean | undefined;
   /** Overrides the default `sizes` for the role. */
-  sizes?: string;
+  sizes?: string | undefined;
   /** Dark gradient so text placed over the image stays legible. */
-  overlay?: "none" | "bottom" | "hero" | "full";
-  blurDataURL?: string;
-  className?: string;
+  overlay?: "none" | "bottom" | "hero" | "full" | undefined;
+  blurDataURL?: string | undefined;
+  className?: string | undefined;
   /** Message shown when `src` is null. */
-  emptyLabel?: string;
+  emptyLabel?: string | undefined;
 };
 
 const overlays = {

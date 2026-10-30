@@ -19,7 +19,7 @@ const placeholder = (src: string, alt: string, focal?: { x: number; y: number })
   src,
   alt,
   source: "placeholder",
-  focal,
+  ...(focal ? { focal } : {}),
 });
 
 export const programs: Program[] = [
