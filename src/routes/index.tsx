@@ -38,7 +38,7 @@ function HomePage() {
     <>
       <Hero
         image={heroImage}
-        title="Building Uganda’s next generation of golfers"
+        title="Mwenge Golf Academy"
         lead="Mwenge Golf Academy identifies, trains and mentors young golfers, and offers professional coaching for juniors, adults and corporate teams."
         primary={{ label: "Book Training", href: "/programs" }}
         secondary={{ label: "Support the academy", href: "/support" }}

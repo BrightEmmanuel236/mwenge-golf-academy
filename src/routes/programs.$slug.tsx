@@ -98,7 +98,7 @@ function ProgramPage() {
           </div>
         </Container>
       </Section>
-      <StickyBookBar />
+      <StickyBookBar href={`/programs/${program.slug}#enquire`} label="Send enquiry" />
     </div>
   );
 }
@@ -116,6 +116,20 @@ export const Route = createFileRoute("/programs/$slug")({
           description: loaderData.program.summary,
           path: `/programs/${loaderData.program.slug}`,
         })
-      : { meta: [{ title: "Program not found" }] },
+      : {
+          ...pageHead({
+            title: "Program unavailable",
+            description: "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
+            path: "/programs",
+          }),
+          meta: [
+            ...pageHead({
+              title: "Program unavailable",
+              description: "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
+              path: "/programs",
+            }).meta,
+            { name: "robots", content: "noindex" },
+          ],
+        },
   component: ProgramPage,
 });

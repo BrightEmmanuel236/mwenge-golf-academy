@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "@/components/app-link";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox, Input, Textarea } from "@/components/ui/input";
@@ -51,8 +52,8 @@ export function EnquiryForm({
   const errorKeys = Object.keys(errors);
 
   React.useEffect(() => {
-    if (errorKeys.length > 0) summaryRef.current?.focus();
-  }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (Object.keys(errors).length > 0) summaryRef.current?.focus();
+  }, [errors]);
 
   const set =
     (key: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -285,7 +286,10 @@ export function EnquiryForm({
         <Button type="submit" size="lg">
           Send enquiry
         </Button>
-        <p className="text-slate text-sm">We reply within one business day.</p>
+        <p className="text-slate text-sm">
+          Preview only: enquiries are not sent or saved. Read our{" "}
+          <Link href="/legal/privacy" className="underline underline-offset-4">privacy notice</Link>.
+        </p>
       </div>
     </form>
   );
