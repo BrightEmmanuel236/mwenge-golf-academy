@@ -8,13 +8,15 @@ const builtRoutes = new Set(["/", "/style-guide", "/about", "/programs", "/youth
 const Link = React.forwardRef<HTMLAnchorElement, Props>(function Link({ href, ...rest }, ref) {
   const programMatch = /^\/programs\/([^/?#]+)(?:#(.*))?$/.exec(href);
   if (programMatch?.[1]) {
+    const { target, ...linkRest } = rest;
     return (
       <RouterLink
         ref={ref}
         to="/programs/$slug"
         params={{ slug: decodeURIComponent(programMatch[1]) }}
         {...(programMatch[2] ? { hash: programMatch[2] } : {})}
-        {...rest}
+        {...(target ? { target } : {})}
+        {...linkRest}
       />
     );
   }
