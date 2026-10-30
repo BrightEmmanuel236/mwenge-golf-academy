@@ -10,11 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as StyleGuideRouteImport } from './routes/style-guide'
+import { Route as YouthDevelopmentRouteImport } from './routes/youth-development'
+import { Route as ProgramsIndexRouteImport } from './routes/programs.index'
+import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StyleGuideRoute = StyleGuideRouteImport.update({
@@ -22,31 +31,81 @@ const StyleGuideRoute = StyleGuideRouteImport.update({
   path: '/style-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
+const YouthDevelopmentRoute = YouthDevelopmentRouteImport.update({
+  id: '/youth-development',
+  path: '/youth-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
+  id: '/programs/',
+  path: '/programs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsSlugRoute = ProgramsSlugRouteImport.update({
+  id: '/programs/$slug',
+  path: '/programs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/style-guide': typeof StyleGuideRoute
+  '/youth-development': typeof YouthDevelopmentRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
+  '/programs/': typeof ProgramsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/style-guide': typeof StyleGuideRoute
+  '/youth-development': typeof YouthDevelopmentRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
+  '/programs': typeof ProgramsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/style-guide': typeof StyleGuideRoute
+  '/youth-development': typeof YouthDevelopmentRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
+  '/programs/': typeof ProgramsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/style-guide'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/style-guide'
+    | '/youth-development'
+    | '/programs/$slug'
+    | '/programs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/style-guide'
-  id: '__root__' | '/' | '/style-guide'
+  to:
+    | '/'
+    | '/about'
+    | '/style-guide'
+    | '/youth-development'
+    | '/programs/$slug'
+    | '/programs'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/style-guide'
+    | '/youth-development'
+    | '/programs/$slug'
+    | '/programs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   StyleGuideRoute: typeof StyleGuideRoute
+  YouthDevelopmentRoute: typeof YouthDevelopmentRoute
+  ProgramsSlugRoute: typeof ProgramsSlugRoute
+  ProgramsIndexRoute: typeof ProgramsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +117,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/style-guide': {
       id: '/style-guide'
       path: '/style-guide'
@@ -65,12 +131,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StyleGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/youth-development': {
+      id: '/youth-development'
+      path: '/youth-development'
+      fullPath: '/youth-development'
+      preLoaderRoute: typeof YouthDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/': {
+      id: '/programs/'
+      path: '/programs'
+      fullPath: '/programs/'
+      preLoaderRoute: typeof ProgramsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/$slug': {
+      id: '/programs/$slug'
+      path: '/programs/$slug'
+      fullPath: '/programs/$slug'
+      preLoaderRoute: typeof ProgramsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   StyleGuideRoute: StyleGuideRoute,
+  YouthDevelopmentRoute: YouthDevelopmentRoute,
+  ProgramsSlugRoute: ProgramsSlugRoute,
+  ProgramsIndexRoute: ProgramsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

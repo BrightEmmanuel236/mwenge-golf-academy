@@ -11,10 +11,10 @@ export interface FieldControlProps {
 interface FieldProps {
   id: string;
   label: string;
-  hint?: string;
-  error?: string;
-  required?: boolean;
-  className?: string;
+  hint?: string | undefined;
+  error?: string | undefined;
+  required?: boolean | undefined;
+  className?: string | undefined;
   children: (props: FieldControlProps) => React.ReactNode;
 }
 

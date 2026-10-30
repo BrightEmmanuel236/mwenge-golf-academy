@@ -21,7 +21,7 @@ import { site } from "@/lib/site";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
-function NotFoundComponent() {
+export function NotFoundComponent() {
   return (
     <Section>
       <Container>
@@ -46,7 +46,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: ErrorComponentProps) {
+export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
