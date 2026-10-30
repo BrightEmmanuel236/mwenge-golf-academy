@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ErrorComponent, NotFoundComponent } from "./__root";
+import { programsQuery } from "@/lib/content/queries";
 import { pageHead } from "@/lib/seo";
 import Link from "@/components/app-link";
 import { Container } from "@/components/layout/container";
@@ -7,10 +10,11 @@ import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { ProgramList } from "@/components/site/program-list";
 import { Button } from "@/components/ui/button";
-import { getPrograms } from "@/lib/content";
 
 function ProgramsPage() {
-  const { programs } = Route.useLoaderData();
+  const { data: programs } = useSuspenseQuery(programsQuery);
+  const { audience } = Route.useSearch();
+  const navigate = Route.useNavigate();
   return (
     <>
       <PageHeader
@@ -20,7 +24,7 @@ function ProgramsPage() {
       />
       <Section space="compact" className="md:py-20">
         <Container>
-          <ProgramList programs={programs} />
+          <ProgramList programs={programs} filter={audience} onFilterChange={(value) => { void navigate({ search: { audience: value } }); }} />
         </Container>
       </Section>
       <Section tone="sand" space="compact">
@@ -39,7 +43,12 @@ function ProgramsPage() {
 }
 
 export const Route = createFileRoute("/programs/")({
-  loader: async () => ({ programs: await getPrograms() }),
+  validateSearch: (search: Record<string, unknown>): { audience: "all" | "junior" | "adult" | "corporate" } => ({
+    audience: search["audience"] === "junior" || search["audience"] === "adult" || search["audience"] === "corporate" ? search["audience"] : "all",
+  }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(programsQuery),
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
   head: () =>
     pageHead({
       title: "Programs and training",

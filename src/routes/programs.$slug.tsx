@@ -1,4 +1,7 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ErrorComponent, NotFoundComponent } from "./__root";
+import { programQuery } from "@/lib/content/queries";
 import { pageHead } from "@/lib/seo";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
@@ -7,11 +10,11 @@ import { SmartImage } from "@/components/media/smart-image";
 import { EnquiryForm } from "@/components/site/enquiry-form";
 import { StickyBookBar } from "@/components/site/sticky-book-bar";
 import { Badge } from "@/components/ui/badge";
-import { getProgramBySlug } from "@/lib/content";
 import { audienceLabel, programPrice } from "@/lib/format";
 
 function ProgramPage() {
-  const { program } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const { data: { program } } = useSuspenseQuery(programQuery(slug));
 
   const details = [
     { label: "Audience", value: audienceLabel[program.audience] },
@@ -104,11 +107,9 @@ function ProgramPage() {
 }
 
 export const Route = createFileRoute("/programs/$slug")({
-  loader: async ({ params }) => {
-    const program = await getProgramBySlug(params.slug);
-    if (!program) throw notFound();
-    return { program };
-  },
+  loader: ({ context, params }) => context.queryClient.ensureQueryData(programQuery(params.slug)),
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
   head: ({ loaderData }) =>
     loaderData
       ? pageHead({

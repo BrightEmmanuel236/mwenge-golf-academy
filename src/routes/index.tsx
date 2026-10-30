@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ErrorComponent, NotFoundComponent } from "./__root";
+import { homeQuery } from "@/lib/content/queries";
 import { pageHead } from "@/lib/seo";
 import Link from "@/components/app-link";
 import { Container } from "@/components/layout/container";
@@ -13,9 +16,7 @@ import { ProgramCard } from "@/components/site/program-card";
 import { StatStrip } from "@/components/site/stat-strip";
 import { SupportBand } from "@/components/site/support-band";
 import { Button } from "@/components/ui/button";
-import { getEvents, getLatestNews, getPrograms, getVerifiedImpactFigures } from "@/lib/content";
 import type { MediaRef } from "@/lib/content/media";
-import { site } from "@/lib/site";
 import { pillars } from "@/lib/content/pages";
 
 // Placeholder photography until the academy supplies images (see README, "Content gaps").
@@ -32,7 +33,7 @@ const youthImage: MediaRef = {
 };
 
 function HomePage() {
-  const { programs, figures, nextEvent, news } = Route.useLoaderData();
+  const { data: { programs, figures, nextEvent, news } } = useSuspenseQuery(homeQuery);
 
   return (
     <>
@@ -161,15 +162,9 @@ function HomePage() {
 }
 
 export const Route = createFileRoute("/")({
-  loader: async () => {
-    const [programs, figures, events, news] = await Promise.all([
-      getPrograms(),
-      getVerifiedImpactFigures(),
-      getEvents(),
-      getLatestNews(3),
-    ]);
-    return { programs, figures, nextEvent: events.upcoming[0] ?? null, news };
-  },
+  loader: ({ context }) => context.queryClient.ensureQueryData(homeQuery),
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
   head: () =>
     pageHead({
       title: "Mwenge Golf Academy | Golf training and youth development in Uganda",

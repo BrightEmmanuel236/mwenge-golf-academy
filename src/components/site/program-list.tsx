@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { ProgramCard } from "@/components/site/program-card";
 import type { Audience, Program } from "@/lib/content/types";
@@ -6,8 +5,7 @@ import { audienceLabel } from "@/lib/format";
 
 type Filter = "all" | Audience;
 
-export function ProgramList({ programs }: { programs: Program[] }) {
-  const [filter, setFilter] = React.useState<Filter>("all");
+export function ProgramList({ programs, filter, onFilterChange }: { programs: Program[]; filter: Filter; onFilterChange: (filter: Filter) => void }) {
   const audiences = (["junior", "adult", "corporate"] as const).filter((a) =>
     programs.some((p) => p.audience === a),
   );
@@ -23,7 +21,7 @@ export function ProgramList({ programs }: { programs: Program[] }) {
             size="sm"
             variant={filter === value ? "dark" : "secondary"}
             aria-pressed={filter === value}
-            onClick={() => setFilter(value)}
+            onClick={() => onFilterChange(value)}
           >
             {value === "all" ? "All programs" : audienceLabel[value]}
           </Button>
