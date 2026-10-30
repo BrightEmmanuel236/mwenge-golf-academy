@@ -33,7 +33,9 @@ const youthImage: MediaRef = {
 };
 
 function HomePage() {
-  const { data: { programs, figures, nextEvent, news } } = useSuspenseQuery(homeQuery);
+  const {
+    data: { programs, figures, nextEvent, news },
+  } = useSuspenseQuery(homeQuery);
 
   return (
     <>

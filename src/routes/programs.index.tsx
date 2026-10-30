@@ -24,7 +24,13 @@ function ProgramsPage() {
       />
       <Section space="compact" className="md:py-20">
         <Container>
-          <ProgramList programs={programs} filter={audience} onFilterChange={(value) => { void navigate({ search: { audience: value } }); }} />
+          <ProgramList
+            programs={programs}
+            filter={audience}
+            onFilterChange={(value) => {
+              void navigate({ search: { audience: value } });
+            }}
+          />
         </Container>
       </Section>
       <Section tone="sand" space="compact">
@@ -43,8 +49,15 @@ function ProgramsPage() {
 }
 
 export const Route = createFileRoute("/programs/")({
-  validateSearch: (search: Record<string, unknown>): { audience: "all" | "junior" | "adult" | "corporate" } => ({
-    audience: search["audience"] === "junior" || search["audience"] === "adult" || search["audience"] === "corporate" ? search["audience"] : "all",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { audience: "all" | "junior" | "adult" | "corporate" } => ({
+    audience:
+      search["audience"] === "junior" ||
+      search["audience"] === "adult" ||
+      search["audience"] === "corporate"
+        ? search["audience"]
+        : "all",
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(programsQuery),
   errorComponent: ErrorComponent,

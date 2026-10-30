@@ -111,7 +111,9 @@ export function SmartImage(props: SmartImageProps) {
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             objectPosition: `${focal.x}% ${focal.y}%`,
-            ...(blurDataURL ? { backgroundImage: `url(${blurDataURL})`, backgroundSize: "cover" } : {}),
+            ...(blurDataURL
+              ? { backgroundImage: `url(${blurDataURL})`, backgroundSize: "cover" }
+              : {}),
           }}
         />
       ) : (

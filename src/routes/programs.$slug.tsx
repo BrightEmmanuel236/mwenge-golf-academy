@@ -14,7 +14,9 @@ import { audienceLabel, programPrice } from "@/lib/format";
 
 function ProgramPage() {
   const { slug } = Route.useParams();
-  const { data: { program } } = useSuspenseQuery(programQuery(slug));
+  const {
+    data: { program },
+  } = useSuspenseQuery(programQuery(slug));
 
   const details = [
     { label: "Audience", value: audienceLabel[program.audience] },
@@ -120,13 +122,15 @@ export const Route = createFileRoute("/programs/$slug")({
       : {
           ...pageHead({
             title: "Program unavailable",
-            description: "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
+            description:
+              "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
             path: "/programs",
           }),
           meta: [
             ...pageHead({
               title: "Program unavailable",
-              description: "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
+              description:
+                "This Mwenge Golf Academy program is unavailable. Browse our junior, adult and corporate programs.",
               path: "/programs",
             }).meta,
             { name: "robots", content: "noindex" },

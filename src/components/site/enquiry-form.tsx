@@ -288,7 +288,10 @@ export function EnquiryForm({
         </Button>
         <p className="text-slate text-sm">
           Preview only: enquiries are not sent or saved. Read our{" "}
-          <Link href="/legal/privacy" className="underline underline-offset-4">privacy notice</Link>.
+          <Link href="/legal/privacy" className="underline underline-offset-4">
+            privacy notice
+          </Link>
+          .
         </p>
       </div>
     </form>

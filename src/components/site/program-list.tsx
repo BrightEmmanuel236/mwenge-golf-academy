@@ -5,7 +5,15 @@ import { audienceLabel } from "@/lib/format";
 
 type Filter = "all" | Audience;
 
-export function ProgramList({ programs, filter, onFilterChange }: { programs: Program[]; filter: Filter; onFilterChange: (filter: Filter) => void }) {
+export function ProgramList({
+  programs,
+  filter,
+  onFilterChange,
+}: {
+  programs: Program[];
+  filter: Filter;
+  onFilterChange: (filter: Filter) => void;
+}) {
   const audiences = (["junior", "adult", "corporate"] as const).filter((a) =>
     programs.some((p) => p.audience === a),
   );
