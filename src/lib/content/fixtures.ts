@@ -14,7 +14,8 @@ import type { MediaRef } from "./media";
  * SAMPLE DATA FOR DESIGN ONLY.
  * Titles, summaries and dates below are placeholders so pages can be designed and reviewed.
  * They are not statements about the academy and must be replaced with client-approved content.
- * Anything marked `isSample` is excluded from production builds by the data layer's launch check.
+ * Anything marked `isSample` is hidden from production builds by `excludeSamples` in the data layer
+ * (shown only in development, or when VITE_SHOW_SAMPLE_CONTENT="true").
  */
 const placeholder = (src: string, alt: string, focal?: { x: number; y: number }): MediaRef => ({
   src,
