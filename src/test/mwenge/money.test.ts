@@ -15,7 +15,14 @@ describe("money", () => {
   });
 
   it("formats minor units for display", () => {
-    expect(formatMoney(1999, "USD", "en-US")).toBe("$19.99");
-    expect(formatMoney(50_000, "UGX", "en-US")).toContain("50,000");
+    // Intl uses a non-breaking space between the code and the amount; normalise it for the check.
+    const plain = (text: string) => text.replace(/\s/g, " ");
+    expect(plain(formatMoney(1999, "USD", "en-US"))).toBe("USD 19.99");
+    expect(plain(formatMoney(50_000, "UGX", "en-US"))).toBe("UGX 50,000");
+  });
+
+  it("shows shillings as UGX in the default locale, never USh", () => {
+    expect(formatMoney(50_000, "UGX")).toContain("UGX");
+    expect(formatMoney(50_000, "UGX")).not.toContain("USh");
   });
 });

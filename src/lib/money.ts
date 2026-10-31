@@ -26,6 +26,9 @@ export function formatMoney(minor: number, currency: CurrencyCode, locale = "en-
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
+    // ISO codes ("UGX 50,000", "USD 25.00") read the same for local and international donors;
+    // the default en-UG locale would otherwise show shillings as "USh".
+    currencyDisplay: "code",
     minimumFractionDigits: exponent,
     maximumFractionDigits: exponent,
   }).format(minor / 10 ** exponent);

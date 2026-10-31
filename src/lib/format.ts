@@ -29,3 +29,20 @@ export function programPrice(program: Pick<Program, "priceUgx" | "priceUsd">): s
 }
 
 export const audienceLabel = { junior: "Junior", adult: "Adult", corporate: "Corporate" } as const;
+
+/** "14 February 2027, 8:00 am to 1:00 pm" in East Africa Time (same-day events). */
+export function formatEventWhen(startIso: string, endIso: string): string {
+  const time = (iso: string) =>
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: TZ,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+      .format(new Date(iso))
+      .replace(/\s/g, " ");
+  const sameDay = formatDate(startIso) === formatDate(endIso);
+  return sameDay
+    ? `${formatDate(startIso)}, ${time(startIso)} to ${time(endIso)}`
+    : `${formatDate(startIso)}, ${time(startIso)} to ${formatDate(endIso)}, ${time(endIso)}`;
+}

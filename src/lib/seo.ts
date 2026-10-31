@@ -6,12 +6,15 @@ export function pageHead({
   description,
   path,
   absoluteTitle = false,
+  noindex = false,
 }: {
   title: string;
   description: string;
   path: string;
   /** Use the title as given instead of appending the site name. */
   absoluteTitle?: boolean;
+  /** Keep a page out of search results (for example, pages awaiting approved content). */
+  noindex?: boolean;
 }) {
   const fullTitle = absoluteTitle ? title : `${title} | ${site.name}`;
   const url = `${site.url}${path}`;
@@ -24,6 +27,7 @@ export function pageHead({
       { property: "og:type", content: "website" },
       { property: "og:url", content: url },
       { name: "twitter:card", content: "summary_large_image" },
+      ...(noindex ? [{ name: "robots", content: "noindex, nofollow" }] : []),
     ],
     links: [{ rel: "canonical", href: url }],
   };

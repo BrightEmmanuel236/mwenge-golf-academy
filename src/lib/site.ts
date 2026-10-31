@@ -7,13 +7,17 @@ export const site = {
   shortName: "Mwenge",
   descriptor: "Golf Academy",
   tagline: "A grassroots golf and youth-development initiative in Uganda.",
-  url: (import.meta.env["VITE_SITE_URL"] as string | undefined) ?? "https://mwenge-golf-academy.lovable.app",
+  url:
+    (import.meta.env["VITE_SITE_URL"] as string | undefined) ??
+    "https://mwenge-golf-academy.lovable.app",
   locale: "en",
   contact: {
     email: null as string | null,
     phone: null as string | null,
     whatsapp: null as string | null,
     address: null as string | null,
+    /** Dedicated route to the Safeguarding Lead (PRD W10). Not supplied yet. */
+    safeguardingEmail: null as string | null,
   },
   social: {
     facebook: null as string | null,
