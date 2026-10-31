@@ -32,7 +32,7 @@ import type {
  */
 
 export async function getPrograms(): Promise<Program[]> {
-  return programs.filter((p) => p.status === "published").sort((a, b) => a.sortOrder - b.sortOrder);
+  return excludeSamples(programs).filter((p) => p.status === "published").sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function getProgramBySlug(slug: string): Promise<Program | null> {
@@ -42,7 +42,7 @@ export async function getProgramBySlug(slug: string): Promise<Program | null> {
 export async function getEvents(
   now: Date = new Date(),
 ): Promise<{ upcoming: AcademyEvent[]; past: AcademyEvent[] }> {
-  const published = events.filter((e) => e.status === "published");
+  const published = excludeSamples(events).filter((e) => e.status === "published");
   const upcoming = published
     .filter((e) => new Date(e.endsAt) >= now)
     .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
@@ -53,11 +53,11 @@ export async function getEvents(
 }
 
 export async function getEventBySlug(slug: string): Promise<AcademyEvent | null> {
-  return events.find((e) => e.status === "published" && e.slug === slug) ?? null;
+  return excludeSamples(events).find((e) => e.status === "published" && e.slug === slug) ?? null;
 }
 
 export async function getAllNews(now: Date = new Date()): Promise<NewsPost[]> {
-  return news
+  return excludeSamples(news)
     .filter((n) => n.status === "published" && new Date(n.publishedAt) <= now)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
@@ -70,7 +70,7 @@ export async function getNewsBySlug(
 }
 
 export async function getLatestNews(limit = 3, now: Date = new Date()): Promise<NewsPost[]> {
-  return news
+  return excludeSamples(news)
     .filter((n) => n.status === "published" && new Date(n.publishedAt) <= now)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .slice(0, limit);
@@ -82,7 +82,7 @@ export async function getVerifiedImpactFigures(): Promise<ImpactFigure[]> {
 }
 
 export async function getEquipmentNeeds(): Promise<EquipmentNeed[]> {
-  return equipmentNeeds.filter((n) => n.active);
+  return excludeSamples(equipmentNeeds).filter((n) => n.active);
 }
 
 /** Partners appear only with written permission on record. */
@@ -142,4 +142,21 @@ export function listSampleContent(): string[] {
     ...news.filter((n) => n.isSample).map((n) => `news:${n.slug}`),
     ...equipmentNeeds.filter((n) => n.isSample).map((n) => `equipment:${n.item}`),
   ];
+}
+
+/**
+ * Sample-content gate. Sample items (isSample) render in development and preview builds only.
+ * A production build hides them unless VITE_SHOW_SAMPLE_CONTENT is "true" (design review only).
+ */
+export function sampleContentAllowed(
+  env: { DEV?: boolean; VITE_SHOW_SAMPLE_CONTENT?: string } = import.meta.env,
+): boolean {
+  return Boolean(env.DEV) || env.VITE_SHOW_SAMPLE_CONTENT === "true";
+}
+
+export function excludeSamples<T extends { isSample?: boolean }>(
+  items: T[],
+  allow: boolean = sampleContentAllowed(),
+): T[] {
+  return allow ? items : items.filter((i) => !i.isSample);
 }
