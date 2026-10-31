@@ -1,3 +1,4 @@
+import type { ConsentRecord } from "./consent";
 import type { MediaRef } from "./media";
 
 export type Audience = "junior" | "adult" | "corporate";
@@ -43,6 +44,8 @@ export interface NewsPost {
   slug: string;
   title: string;
   excerpt: string;
+  /** Article body, one paragraph per entry. */
+  body?: string[];
   category: string;
   publishedAt: string; // ISO
   image: MediaRef;
@@ -79,4 +82,15 @@ export interface EquipmentNeed {
   acceptedCondition: string;
   active: boolean;
   isSample?: boolean;
+}
+
+/** A photograph or video in the gallery. Only authentic academy media is ever published here. */
+export interface GalleryItem {
+  id: string;
+  album: string;
+  media: MediaRef;
+  takenOn?: string; // ISO date
+  eventSlug?: string;
+  /** Consent record covering this image when it shows a minor. */
+  consent?: ConsentRecord | null;
 }

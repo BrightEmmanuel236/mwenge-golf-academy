@@ -74,3 +74,32 @@ export function canPublishMinorMedia(
   if (!media.containsMinors) return true;
   return isConsentValid(consent, ["photo"], now);
 }
+
+/**
+ * What a visitor may see of a talent profile. Built only from fields the guardian consented to.
+ * It deliberately excludes the consent record (guardian name, document reference) and approver:
+ * those must never be serialized into a public page.
+ */
+export interface PublicTalent {
+  slug: string;
+  displayName: string;
+  ageBand: string;
+  story?: string;
+  achievements: string[];
+  photo?: MediaRef;
+  /** Whether search engines may index this individual page (needs explicit consent). */
+  indexable: boolean;
+}
+
+export function toPublicTalent(profile: TalentProfile): PublicTalent {
+  const scope = profile.consent?.scope;
+  return {
+    slug: profile.slug,
+    displayName: profile.displayName,
+    ageBand: profile.ageBand,
+    achievements: scope?.achievements ? [...profile.achievements] : [],
+    indexable: scope?.searchIndexing === true,
+    ...(scope?.story && profile.story ? { story: profile.story } : {}),
+    ...(scope?.photo && profile.photo ? { photo: profile.photo } : {}),
+  };
+}

@@ -3,6 +3,7 @@ import type {
   AcademyEvent,
   EquipmentNeed,
   ImpactFigure,
+  GalleryItem,
   NewsPost,
   Partner,
   Program,
@@ -103,6 +104,10 @@ export const news: NewsPost[] = [
     slug: "sample-announcement",
     title: "Sample announcement",
     excerpt: "Sample excerpt used to design the news list. Replace with a real academy update.",
+    body: [
+      "Sample article text. This paragraph stands in for a real academy announcement so the article layout can be reviewed.",
+      "Replace with an approved update written by the academy.",
+    ],
     category: "Academy news",
     publishedAt: "2026-10-01T09:00:00+03:00",
     image: placeholder(
@@ -149,3 +154,9 @@ export const partners: Partner[] = [];
 
 /** No talent profiles until guardian consent is on file. We never invent profiles of children. */
 export const talents: TalentProfile[] = [];
+
+/**
+ * No gallery items until authentic academy photographs exist with rights and (for minors)
+ * guardian consent on file. Stock or placeholder images never appear in the gallery.
+ */
+export const galleryItems: GalleryItem[] = [];

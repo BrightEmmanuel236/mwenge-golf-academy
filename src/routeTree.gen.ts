@@ -11,10 +11,25 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as StyleGuideRouteImport } from './routes/style-guide'
 import { Route as YouthDevelopmentRouteImport } from './routes/youth-development'
+import { Route as EventsIndexRouteImport } from './routes/events.index'
+import { Route as EventsSlugRouteImport } from './routes/events.$slug'
+import { Route as ImpactIndexRouteImport } from './routes/impact.index'
+import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as ProgramsIndexRouteImport } from './routes/programs.index'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
+import { Route as SupportIndexRouteImport } from './routes/support.index'
+import { Route as SupportEquipmentRouteImport } from './routes/support.equipment'
+import { Route as SupportSponsorRouteImport } from './routes/support.sponsor'
+import { Route as ImpactTalentsSlugRouteImport } from './routes/impact.talents.$slug'
+import { Route as SupportDonateIndexRouteImport } from './routes/support.donate.index'
+import { Route as SupportDonateThankYouRouteImport } from './routes/support.donate.thank-you'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,6 +39,21 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StyleGuideRoute = StyleGuideRouteImport.update({
@@ -36,6 +66,36 @@ const YouthDevelopmentRoute = YouthDevelopmentRouteImport.update({
   path: '/youth-development',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsIndexRoute = EventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsSlugRoute = EventsSlugRouteImport.update({
+  id: '/events/$slug',
+  path: '/events/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpactIndexRoute = ImpactIndexRouteImport.update({
+  id: '/impact/',
+  path: '/impact/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalSlugRoute = LegalSlugRouteImport.update({
+  id: '/legal/$slug',
+  path: '/legal/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
@@ -46,66 +106,201 @@ const ProgramsSlugRoute = ProgramsSlugRouteImport.update({
   path: '/programs/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportIndexRoute = SupportIndexRouteImport.update({
+  id: '/support/',
+  path: '/support/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportEquipmentRoute = SupportEquipmentRouteImport.update({
+  id: '/support/equipment',
+  path: '/support/equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportSponsorRoute = SupportSponsorRouteImport.update({
+  id: '/support/sponsor',
+  path: '/support/sponsor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpactTalentsSlugRoute = ImpactTalentsSlugRouteImport.update({
+  id: '/impact/talents/$slug',
+  path: '/impact/talents/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportDonateIndexRoute = SupportDonateIndexRouteImport.update({
+  id: '/support/donate/',
+  path: '/support/donate/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportDonateThankYouRoute = SupportDonateThankYouRouteImport.update({
+  id: '/support/donate/thank-you',
+  path: '/support/donate/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/partners': typeof PartnersRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
+  '/support/equipment': typeof SupportEquipmentRoute
+  '/support/sponsor': typeof SupportSponsorRoute
+  '/events/': typeof EventsIndexRoute
+  '/impact/': typeof ImpactIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/support/': typeof SupportIndexRoute
+  '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
+  '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/support/donate/': typeof SupportDonateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/partners': typeof PartnersRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
+  '/support/equipment': typeof SupportEquipmentRoute
+  '/support/sponsor': typeof SupportSponsorRoute
+  '/events': typeof EventsIndexRoute
+  '/impact': typeof ImpactIndexRoute
+  '/news': typeof NewsIndexRoute
   '/programs': typeof ProgramsIndexRoute
+  '/support': typeof SupportIndexRoute
+  '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
+  '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/support/donate': typeof SupportDonateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/partners': typeof PartnersRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
+  '/support/equipment': typeof SupportEquipmentRoute
+  '/support/sponsor': typeof SupportSponsorRoute
+  '/events/': typeof EventsIndexRoute
+  '/impact/': typeof ImpactIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/support/': typeof SupportIndexRoute
+  '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
+  '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/support/donate/': typeof SupportDonateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/contact'
+    | '/gallery'
+    | '/partners'
     | '/style-guide'
     | '/youth-development'
+    | '/events/$slug'
+    | '/legal/$slug'
+    | '/news/$slug'
     | '/programs/$slug'
+    | '/support/equipment'
+    | '/support/sponsor'
+    | '/events/'
+    | '/impact/'
+    | '/news/'
     | '/programs/'
+    | '/support/'
+    | '/impact/talents/$slug'
+    | '/support/donate/thank-you'
+    | '/support/donate/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/contact'
+    | '/gallery'
+    | '/partners'
     | '/style-guide'
     | '/youth-development'
+    | '/events/$slug'
+    | '/legal/$slug'
+    | '/news/$slug'
     | '/programs/$slug'
+    | '/support/equipment'
+    | '/support/sponsor'
+    | '/events'
+    | '/impact'
+    | '/news'
     | '/programs'
+    | '/support'
+    | '/impact/talents/$slug'
+    | '/support/donate/thank-you'
+    | '/support/donate'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/contact'
+    | '/gallery'
+    | '/partners'
     | '/style-guide'
     | '/youth-development'
+    | '/events/$slug'
+    | '/legal/$slug'
+    | '/news/$slug'
     | '/programs/$slug'
+    | '/support/equipment'
+    | '/support/sponsor'
+    | '/events/'
+    | '/impact/'
+    | '/news/'
     | '/programs/'
+    | '/support/'
+    | '/impact/talents/$slug'
+    | '/support/donate/thank-you'
+    | '/support/donate/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  GalleryRoute: typeof GalleryRoute
+  PartnersRoute: typeof PartnersRoute
   StyleGuideRoute: typeof StyleGuideRoute
   YouthDevelopmentRoute: typeof YouthDevelopmentRoute
+  EventsSlugRoute: typeof EventsSlugRoute
+  LegalSlugRoute: typeof LegalSlugRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   ProgramsSlugRoute: typeof ProgramsSlugRoute
+  SupportEquipmentRoute: typeof SupportEquipmentRoute
+  SupportSponsorRoute: typeof SupportSponsorRoute
+  EventsIndexRoute: typeof EventsIndexRoute
+  ImpactIndexRoute: typeof ImpactIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
   ProgramsIndexRoute: typeof ProgramsIndexRoute
+  SupportIndexRoute: typeof SupportIndexRoute
+  ImpactTalentsSlugRoute: typeof ImpactTalentsSlugRoute
+  SupportDonateThankYouRoute: typeof SupportDonateThankYouRoute
+  SupportDonateIndexRoute: typeof SupportDonateIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -124,6 +319,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/style-guide': {
       id: '/style-guide'
       path: '/style-guide'
@@ -136,6 +352,48 @@ declare module '@tanstack/react-router' {
       path: '/youth-development'
       fullPath: '/youth-development'
       preLoaderRoute: typeof YouthDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/': {
+      id: '/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof EventsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/$slug': {
+      id: '/events/$slug'
+      path: '/events/$slug'
+      fullPath: '/events/$slug'
+      preLoaderRoute: typeof EventsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impact/': {
+      id: '/impact/'
+      path: '/impact'
+      fullPath: '/impact/'
+      preLoaderRoute: typeof ImpactIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/$slug': {
+      id: '/legal/$slug'
+      path: '/legal/$slug'
+      fullPath: '/legal/$slug'
+      preLoaderRoute: typeof LegalSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/programs/': {
@@ -152,16 +410,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support/': {
+      id: '/support/'
+      path: '/support'
+      fullPath: '/support/'
+      preLoaderRoute: typeof SupportIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support/equipment': {
+      id: '/support/equipment'
+      path: '/support/equipment'
+      fullPath: '/support/equipment'
+      preLoaderRoute: typeof SupportEquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support/sponsor': {
+      id: '/support/sponsor'
+      path: '/support/sponsor'
+      fullPath: '/support/sponsor'
+      preLoaderRoute: typeof SupportSponsorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impact/talents/$slug': {
+      id: '/impact/talents/$slug'
+      path: '/impact/talents/$slug'
+      fullPath: '/impact/talents/$slug'
+      preLoaderRoute: typeof ImpactTalentsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support/donate/': {
+      id: '/support/donate/'
+      path: '/support/donate'
+      fullPath: '/support/donate/'
+      preLoaderRoute: typeof SupportDonateIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support/donate/thank-you': {
+      id: '/support/donate/thank-you'
+      path: '/support/donate/thank-you'
+      fullPath: '/support/donate/thank-you'
+      preLoaderRoute: typeof SupportDonateThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  GalleryRoute: GalleryRoute,
+  PartnersRoute: PartnersRoute,
   StyleGuideRoute: StyleGuideRoute,
   YouthDevelopmentRoute: YouthDevelopmentRoute,
+  EventsSlugRoute: EventsSlugRoute,
+  LegalSlugRoute: LegalSlugRoute,
+  NewsSlugRoute: NewsSlugRoute,
   ProgramsSlugRoute: ProgramsSlugRoute,
+  SupportEquipmentRoute: SupportEquipmentRoute,
+  SupportSponsorRoute: SupportSponsorRoute,
+  EventsIndexRoute: EventsIndexRoute,
+  ImpactIndexRoute: ImpactIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
   ProgramsIndexRoute: ProgramsIndexRoute,
+  SupportIndexRoute: SupportIndexRoute,
+  ImpactTalentsSlugRoute: ImpactTalentsSlugRoute,
+  SupportDonateThankYouRoute: SupportDonateThankYouRoute,
+  SupportDonateIndexRoute: SupportDonateIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
