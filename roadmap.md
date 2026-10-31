@@ -9,4 +9,4 @@
 - [x] F2 page sweep (18 pages + event/news details) at 1440px and 390px: all load, correct titles, one heading each, no sideways scroll, no errors.
 - [ ] Talent profile pages: no sample talents exist, so untested until real profiles are added.
 - [ ] Donation payment provider: awaiting client decision; giving stays preview-only.
-- [ ] ~135 pre-existing lint errors outside batch files: awaiting decision (clean or leave).
+- [x] Pre-existing lint errors cleaned (0 errors, 1 harmless warning).
