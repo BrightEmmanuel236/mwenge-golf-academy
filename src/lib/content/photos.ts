@@ -1,12 +1,14 @@
 import type { MediaRef } from "./media";
-import bagOnTheGreen from "@/assets/photos/bag-on-the-green.webp.asset.json";
-import ballInGrass from "@/assets/photos/ball-in-grass.webp.asset.json";
-import courseWithTrolleys from "@/assets/photos/course-with-trolleys.webp.asset.json";
-import golferFollowThrough from "@/assets/photos/golfer-follow-through.webp.asset.json";
-import golferFullSwing from "@/assets/photos/golfer-full-swing.webp.asset.json";
-import golferSunsetSilhouette from "@/assets/photos/golfer-sunset-silhouette.webp.asset.json";
-import putterAtTheHole from "@/assets/photos/putter-at-the-hole.webp.asset.json";
-import rollingCourseGreen from "@/assets/photos/rolling-course-green.webp.asset.json";
+
+// Served from public/photos so they work on any host (Vercel included).
+const bagOnTheGreen = { url: "/photos/bag-on-the-green.webp" };
+const ballInGrass = { url: "/photos/ball-in-grass.webp" };
+const courseWithTrolleys = { url: "/photos/course-with-trolleys.webp" };
+const golferFollowThrough = { url: "/photos/golfer-follow-through.webp" };
+const golferFullSwing = { url: "/photos/golfer-full-swing.webp" };
+const golferSunsetSilhouette = { url: "/photos/golfer-sunset-silhouette.webp" };
+const putterAtTheHole = { url: "/photos/putter-at-the-hole.webp" };
+const rollingCourseGreen = { url: "/photos/rolling-course-green.webp" };
 
 /**
  * Interim photo library (stand-in until the admin media library in Supabase Storage, PRD 7.7).
