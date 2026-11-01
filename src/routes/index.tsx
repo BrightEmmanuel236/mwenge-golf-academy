@@ -18,19 +18,11 @@ import { SupportBand } from "@/components/site/support-band";
 import { Button } from "@/components/ui/button";
 import type { MediaRef } from "@/lib/content/media";
 import { pillars } from "@/lib/content/pages";
+import { photos } from "@/lib/content/photos";
 
-// Placeholder photography until the academy supplies images (see README, "Content gaps").
-const heroImage: MediaRef = {
-  src: "/placeholders/fairway-dawn.svg",
-  alt: "Abstract illustration of a fairway at dawn",
-  source: "placeholder",
-  focal: { x: 50, y: 60 },
-};
-const youthImage: MediaRef = {
-  src: "/placeholders/practice-green.svg",
-  alt: "Abstract illustration of a putting green with a flag",
-  source: "placeholder",
-};
+// Interim client-supplied photos; replaced by admin-managed media later (PRD 7.7).
+const heroImage: MediaRef = photos.golferFullSwing;
+const youthImage: MediaRef = photos.golferSunsetSilhouette;
 
 function HomePage() {
   const {

@@ -31,3 +31,7 @@ Open:
   - enquiries, pledges, sponsor_enquiries: anon/public INSERT only through a server function with validation + honeypot; SELECT/UPDATE/DELETE staff-only (role checked via a user_roles table and a security-definer has_role function).
   - donations: no client writes at all; rows are created/updated only by the server after payment-provider verification; SELECT staff-only (finance role).
   - consent_records: no public access; INSERT/UPDATE by safeguarding staff only; SELECT limited to safeguarding staff; never exposed through public talent queries (public view uses only toPublicTalent fields).
+
+## Interim photos
+- [x] 8 client-supplied stock golf photos wired in (home, about, youth, programs, news), labelled "Placeholder image", kept out of gallery/impact/events.
+- [ ] F3/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.

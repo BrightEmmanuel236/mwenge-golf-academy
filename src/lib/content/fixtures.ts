@@ -9,6 +9,7 @@ import type {
   Program,
 } from "./types";
 import type { MediaRef } from "./media";
+import { photos } from "./photos";
 
 /**
  * SAMPLE DATA FOR DESIGN ONLY.
@@ -39,10 +40,7 @@ export const programs: Program[] = [
       "Sample audience note. Replace with the ages and experience levels the program is designed for.",
     priceUgx: null,
     priceUsd: null,
-    image: placeholder(
-      "/placeholders/practice-green.svg",
-      "Abstract illustration of a putting green with a flag",
-    ),
+    image: photos.putterAtTheHole,
     status: "published",
     sortOrder: 1,
     isSample: true,
@@ -56,10 +54,7 @@ export const programs: Program[] = [
     description: ["Sample description. Replace with approved wording for the adult program."],
     priceUgx: null,
     priceUsd: null,
-    image: placeholder(
-      "/placeholders/fairway-dawn.svg",
-      "Abstract illustration of a fairway at dawn",
-    ),
+    image: photos.bagOnTheGreen,
     status: "published",
     sortOrder: 2,
     isSample: true,
@@ -75,7 +70,7 @@ export const programs: Program[] = [
     ],
     priceUgx: null,
     priceUsd: null,
-    image: placeholder("/placeholders/clubs-detail.svg", "Abstract illustration of golf clubs"),
+    image: photos.courseWithTrolleys,
     status: "published",
     sortOrder: 3,
     isSample: true,
@@ -111,10 +106,7 @@ export const news: NewsPost[] = [
     ],
     category: "Academy news",
     publishedAt: "2026-10-01T09:00:00+03:00",
-    image: placeholder(
-      "/placeholders/practice-green.svg",
-      "Abstract illustration of a putting green with a flag",
-    ),
+    image: photos.ballInGrass,
     status: "published",
     isSample: true,
   },
