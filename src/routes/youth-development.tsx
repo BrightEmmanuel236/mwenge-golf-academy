@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { SmartImage } from "@/components/media/smart-image";
+import { photos } from "@/lib/content/photos";
 import { FaqList } from "@/components/site/faq-list";
 import { StickyBookBar } from "@/components/site/sticky-book-bar";
 import { Button } from "@/components/ui/button";
@@ -40,9 +41,10 @@ function YouthDevelopmentPage() {
         media={
           <SmartImage
             role="feature"
-            src="/placeholders/practice-green.svg"
-            source="placeholder"
-            alt="Abstract illustration of a putting green with a flag"
+            src={photos.golferFollowThrough.src}
+            source={photos.golferFollowThrough.source}
+            alt={photos.golferFollowThrough.alt}
+            focal={photos.golferFollowThrough.focal}
           />
         }
       >

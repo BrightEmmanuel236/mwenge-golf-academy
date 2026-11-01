@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { SmartImage } from "@/components/media/smart-image";
+import { photos } from "@/lib/content/photos";
 import { ContentPending } from "@/components/site/content-pending";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody } from "@/components/ui/card";
@@ -43,9 +44,10 @@ function AboutPage() {
         media={
           <SmartImage
             role="feature"
-            src="/placeholders/fairway-dawn.svg"
-            source="placeholder"
-            alt="Abstract illustration of a fairway at dawn"
+            src={photos.rollingCourseGreen.src}
+            source={photos.rollingCourseGreen.source}
+            alt={photos.rollingCourseGreen.alt}
+            focal={photos.rollingCourseGreen.focal}
           />
         }
       >
