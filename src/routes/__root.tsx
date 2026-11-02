@@ -19,6 +19,8 @@ import { SiteHeader } from "@/components/site/site-header";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
 import appCss from "../styles.css?url";
+import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 export function NotFoundComponent() {
@@ -99,6 +101,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      // Preload the two Latin font files every page needs so text paints in the final fonts sooner.
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: interLatin,
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: frauncesLatin,
+        crossOrigin: "anonymous",
+      },
     ],
   }),
   shellComponent: RootShell,

@@ -14,6 +14,7 @@ export function ProgramCard({ program }: { program: Program }) {
         source={program.image.source}
         alt={program.image.alt}
         focal={program.image.focal}
+        variants={program.image.variants}
       />
       <CardBody className="flex-1">
         <Badge variant={program.audience === "junior" ? "earth" : "neutral"} className="self-start">

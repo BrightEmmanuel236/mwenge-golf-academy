@@ -35,6 +35,7 @@ function TalentPage() {
               source={talent.photo.source}
               alt={talent.photo.alt}
               focal={talent.photo.focal}
+              variants={talent.photo.variants}
               className="rounded-md"
             />
           ) : null}

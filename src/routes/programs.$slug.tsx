@@ -48,6 +48,7 @@ function ProgramPage() {
             source={program.image.source}
             alt={program.image.alt}
             focal={program.image.focal}
+            variants={program.image.variants}
             className="rounded-md"
           />
 

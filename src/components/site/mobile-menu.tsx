@@ -35,7 +35,7 @@ export function MobileMenu() {
           {/* Top bar matches the site header so the official logo sits on its intended light background. */}
           <div className="bg-ivory text-fairway flex h-[76px] shrink-0 items-center justify-between px-5 sm:px-8">
             <Link href="/" aria-label="Mwenge Golf Academy, home">
-              <Logo className="h-[60px]" />
+              <Logo sizes="84px" className="h-[60px]" />
             </Link>
             <Dialog.Close asChild>
               <button

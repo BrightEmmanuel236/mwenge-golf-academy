@@ -15,6 +15,7 @@ export function TalentCard({ talent }: { talent: PublicTalent }) {
           source={photo.source}
           alt={photo.alt}
           focal={photo.focal}
+          variants={photo.variants}
         />
       ) : (
         <SmartImage role="portrait" src={null} source="academy" decorative emptyLabel="" />

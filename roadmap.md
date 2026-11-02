@@ -16,7 +16,7 @@ Done:
 - [x] Lint cleaned (0 errors, 1 harmless warning). Auto-generated Supabase integration files restored to their original form.
 - [x] Sample-content gate: `excludeSamples` in the data layer hides isSample programs, events, news and equipment on production builds (override: VITE_SHOW_SAMPLE_CONTENT="true"). Covered by sample-gate.test.ts.
 - [x] Security scan (Oct 31 2026): 1 info finding — leaked-password protection is off (fix in Supabase Auth settings if staff logins are added). No tables yet.
-- [x] Row-level access rules for the F3 tables are drafted below.
+- [x] Row-level access rules for the back-end tables are drafted below.
 
 Open:
 - [ ] Talent profile pages: no profiles yet, so untested until real profiles exist.
@@ -24,7 +24,13 @@ Open:
 - [ ] Real domain: awaiting client; VITE_SITE_URL still uses the lovable.app default.
 - [ ] Client content: replace all sample programs/events/news/equipment, verified impact figures, contact details, legal wording.
 
-# F3 requirements
+# F3 polish (done)
+
+- [x] F3 patch installed (43 files, images checksum-verified); 137 tests pass; build passed.
+- [ ] Decision: approve sharp as a dev dependency for scripts/optimize-images.mjs.
+- [ ] Re-measure page load speed on the deployed host (home and About still above 2.5 s in Claude's test).
+
+# Back-end requirements (B1 onward, not started; each phase needs approval)
 
 - [ ] Remove the preview-only notices (`formsConnected`) only once each form saves its submission server-side; confirm to the user only after the save succeeds.
 - [ ] Create the tables in the external Supabase with these rules (RLS on, no anon SELECT on any table):
@@ -34,4 +40,4 @@ Open:
 
 ## Interim photos
 - [x] 8 client-supplied stock golf photos wired in (home, about, youth, programs, news), labelled "Placeholder image", kept out of gallery/impact/events.
-- [ ] F3/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.
+- [ ] B-phase/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.

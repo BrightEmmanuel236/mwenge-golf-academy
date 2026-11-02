@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { eventQuery } from "@/lib/content/queries";
 import { formatEventWhen } from "@/lib/format";
 import { pageHead } from "@/lib/seo";
+import { eventJsonLd } from "@/lib/structured-data";
 import { ErrorComponent, NotFoundComponent } from "./__root";
 
 const typeLabel = {
@@ -49,6 +50,7 @@ function EventPage() {
             source={event.image.source}
             alt={event.image.alt}
             focal={event.image.focal}
+            variants={event.image.variants}
             className="rounded-md"
           />
           <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
@@ -88,6 +90,7 @@ export const Route = createFileRoute("/events/$slug")({
           title: loaderData.event.title,
           description: loaderData.event.summary,
           path: `/events/${loaderData.event.slug}`,
+          jsonLd: [eventJsonLd(loaderData.event)],
         })
       : { meta: [{ title: "Event not found" }] },
   component: EventPage,
