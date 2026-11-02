@@ -24,7 +24,13 @@ Open:
 - [ ] Real domain: awaiting client; VITE_SITE_URL still uses the lovable.app default.
 - [ ] Client content: replace all sample programs/events/news/equipment, verified impact figures, contact details, legal wording.
 
-# F3 requirements
+# F3 polish (done)
+
+- [x] F3 patch installed (43 files, images checksum-verified); 137 tests pass; build passed.
+- [ ] Decision: approve sharp as a dev dependency for scripts/optimize-images.mjs.
+- [ ] Re-measure page load speed on the deployed host (home and About still above 2.5 s in Claude's test).
+
+# Back-end requirements (B1 onward, not started; each phase needs approval)
 
 - [ ] Remove the preview-only notices (`formsConnected`) only once each form saves its submission server-side; confirm to the user only after the save succeeds.
 - [ ] Create the tables in the external Supabase with these rules (RLS on, no anon SELECT on any table):

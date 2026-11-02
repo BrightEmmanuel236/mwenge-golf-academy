@@ -659,6 +659,12 @@ Performance budgets are enforced in CI (Lighthouse CI) with failures blocking re
 
 Phase 3 items are not designed or built in Phase 1 beyond keeping the data model extensible.
 
+### Build batches within Phase 1 (working plan)
+- **F1:** core pages (Home, About, Programs, Youth Development) and enquiry form, preview-only.
+- **F2:** remaining public pages (Impact, Events, News, Support, Donate, Sponsor, Equipment, Gallery, Partners, Contact, Legal), preview-only.
+- **F3:** polish only: image optimisation, logo variants, SEO (sitemap, structured data, share image), empty states, accessibility and performance audit. No back-end or Supabase work.
+- **B1 onward:** back-end phases (Supabase tables and access rules, server-side form saving, admin, media library, payments), each planned and approved separately before work starts.
+
 ---
 
 ## 13. Testable Acceptance Criteria
