@@ -16,7 +16,7 @@ Done:
 - [x] Lint cleaned (0 errors, 1 harmless warning). Auto-generated Supabase integration files restored to their original form.
 - [x] Sample-content gate: `excludeSamples` in the data layer hides isSample programs, events, news and equipment on production builds (override: VITE_SHOW_SAMPLE_CONTENT="true"). Covered by sample-gate.test.ts.
 - [x] Security scan (Oct 31 2026): 1 info finding — leaked-password protection is off (fix in Supabase Auth settings if staff logins are added). No tables yet.
-- [x] Row-level access rules for the F3 tables are drafted below.
+- [x] Row-level access rules for the back-end tables are drafted below.
 
 Open:
 - [ ] Talent profile pages: no profiles yet, so untested until real profiles exist.
@@ -40,4 +40,4 @@ Open:
 
 ## Interim photos
 - [x] 8 client-supplied stock golf photos wired in (home, about, youth, programs, news), labelled "Placeholder image", kept out of gallery/impact/events.
-- [ ] F3/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.
+- [ ] B-phase/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.
