@@ -11,7 +11,7 @@ export function SiteHeader() {
     <header className="border-line bg-ivory/95 supports-[backdrop-filter]:bg-ivory/85 sticky top-0 z-40 border-b backdrop-blur">
       <div className="mx-auto flex h-[76px] w-full max-w-[1440px] items-center justify-between gap-6 px-5 sm:px-8 xl:h-[88px]">
         <Link href="/" aria-label="Mwenge Golf Academy, home" className="shrink-0">
-          <Logo priority className="h-[60px] xl:h-[72px]" />
+          <Logo priority sizes="(min-width: 1280px) 101px, 84px" className="h-[60px] xl:h-[72px]" />
         </Link>
 
         <DesktopNav />

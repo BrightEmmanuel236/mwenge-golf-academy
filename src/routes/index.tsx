@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ErrorComponent, NotFoundComponent } from "./__root";
 import { homeQuery } from "@/lib/content/queries";
 import { pageHead } from "@/lib/seo";
+import { organizationJsonLd } from "@/lib/structured-data";
 import Link from "@/components/app-link";
 import { Container } from "@/components/layout/container";
 import { FeatureSplit } from "@/components/layout/feature-split";
@@ -12,17 +13,26 @@ import { SmartImage } from "@/components/media/smart-image";
 import { EventCard } from "@/components/site/event-card";
 import { Hero } from "@/components/site/hero";
 import { NewsCard } from "@/components/site/news-card";
+import { AudiencePathways } from "@/components/site/audience-pathways";
 import { ProgramCard } from "@/components/site/program-card";
 import { StatStrip } from "@/components/site/stat-strip";
 import { SupportBand } from "@/components/site/support-band";
 import { Button } from "@/components/ui/button";
 import type { MediaRef } from "@/lib/content/media";
 import { pillars } from "@/lib/content/pages";
-import { photos } from "@/lib/content/photos";
 
-// Interim client-supplied photos; replaced by admin-managed media later (PRD 7.7).
-const heroImage: MediaRef = photos.golferFullSwing;
-const youthImage: MediaRef = photos.golferSunsetSilhouette;
+// Placeholder photography until the academy supplies images (see README, "Content gaps").
+const heroImage: MediaRef = {
+  src: "/placeholders/fairway-dawn.svg",
+  alt: "Abstract illustration of a fairway at dawn",
+  source: "placeholder",
+  focal: { x: 50, y: 60 },
+};
+const youthImage: MediaRef = {
+  src: "/placeholders/practice-green.svg",
+  alt: "Abstract illustration of a putting green with a flag",
+  source: "placeholder",
+};
 
 function HomePage() {
   const {
@@ -47,18 +57,31 @@ function HomePage() {
             title="Training for every golfer"
             description="Choose a program for juniors, adults or your team, then send an enquiry and the academy will be in touch."
           />
-          <ul className="grid gap-6 md:grid-cols-3">
-            {programs.slice(0, 3).map((program) => (
-              <li key={program.slug}>
-                <ProgramCard program={program} />
-              </li>
-            ))}
-          </ul>
-          <div>
-            <Button asChild variant="secondary">
-              <Link href="/programs">View all programs</Link>
-            </Button>
-          </div>
+          {programs.length > 0 ? (
+            <>
+              <ul className="grid gap-6 md:grid-cols-3">
+                {programs.slice(0, 3).map((program) => (
+                  <li key={program.slug}>
+                    <ProgramCard program={program} />
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <Button asChild variant="secondary">
+                  <Link href="/programs">View all programs</Link>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <AudiencePathways />
+              <div>
+                <Button asChild variant="secondary">
+                  <Link href="/contact">Contact the academy</Link>
+                </Button>
+              </div>
+            </>
+          )}
         </Container>
       </Section>
 
@@ -166,6 +189,7 @@ export const Route = createFileRoute("/")({
         "Mwenge Golf Academy identifies, trains and mentors young golfers in Uganda, and offers professional golf training for juniors, adults and corporate clients.",
       path: "/",
       absoluteTitle: true,
+      jsonLd: [organizationJsonLd()],
     }),
   component: HomePage,
 });

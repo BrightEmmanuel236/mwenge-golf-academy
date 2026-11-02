@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { MediaSource } from "@/lib/content/media";
+import { variantSrcSet, type ImageVariant, type MediaSource } from "@/lib/content/media";
 
 /**
  * Image roles from PRD 7.2. Each role fixes the aspect ratio per breakpoint and the
@@ -57,6 +57,8 @@ type SmartImageProps = AltProps & {
   /** Dark gradient so text placed over the image stays legible. */
   overlay?: "none" | "bottom" | "hero" | "full" | undefined;
   blurDataURL?: string | undefined;
+  /** Responsive AVIF/WebP files for this image (see docs/IMAGES.md). */
+  variants?: ImageVariant[] | undefined;
   className?: string | undefined;
   /** Message shown when `src` is null. */
   emptyLabel?: string | undefined;
@@ -85,6 +87,7 @@ export function SmartImage(props: SmartImageProps) {
     priority = false,
     overlay = "none",
     blurDataURL,
+    variants,
     className,
     emptyLabel = "Photography to be added",
   } = props;
@@ -101,21 +104,39 @@ export function SmartImage(props: SmartImageProps) {
       )}
     >
       {src ? (
-        <img
-          src={src}
-          alt={alt}
-          sizes={props.sizes ?? config.sizes}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "auto"}
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{
-            objectPosition: `${focal.x}% ${focal.y}%`,
-            ...(blurDataURL
-              ? { backgroundImage: `url(${blurDataURL})`, backgroundSize: "cover" }
-              : {}),
-          }}
-        />
+        <picture>
+          {variants && variants.length > 0
+            ? (["avif", "webp"] as const).map((format) => {
+                const srcSet = variantSrcSet(variants, format);
+                return srcSet ? (
+                  <source
+                    key={format}
+                    type={`image/${format}`}
+                    srcSet={srcSet}
+                    sizes={props.sizes ?? config.sizes}
+                  />
+                ) : null;
+              })
+            : null}
+          <img
+            src={src}
+            {...(variants && variants.length > 0
+              ? { srcSet: variantSrcSet(variants, "fallback") ?? "" }
+              : {})}
+            alt={alt}
+            sizes={props.sizes ?? config.sizes}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{
+              objectPosition: `${focal.x}% ${focal.y}%`,
+              ...(blurDataURL
+                ? { backgroundImage: `url(${blurDataURL})`, backgroundSize: "cover" }
+                : {}),
+            }}
+          />
+        </picture>
       ) : (
         <div className="text-slate absolute inset-0 flex items-center justify-center p-6 text-center text-sm">
           {emptyLabel}

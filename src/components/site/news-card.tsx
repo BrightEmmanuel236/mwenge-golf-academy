@@ -14,6 +14,7 @@ export function NewsCard({ post }: { post: NewsPost }) {
         source={post.image.source}
         alt={post.image.alt}
         focal={post.image.focal}
+        variants={post.image.variants}
       />
       <CardBody className="flex-1">
         <div className="text-slate flex items-center gap-3 text-sm">

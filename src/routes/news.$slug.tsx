@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { newsQuery } from "@/lib/content/queries";
 import { formatDate } from "@/lib/format";
 import { pageHead } from "@/lib/seo";
+import { articleJsonLd } from "@/lib/structured-data";
 import { ErrorComponent, NotFoundComponent } from "./__root";
 
 function NewsArticlePage() {
@@ -42,6 +43,7 @@ function NewsArticlePage() {
             source={post.image.source}
             alt={post.image.alt}
             focal={post.image.focal}
+            variants={post.image.variants}
             className="rounded-md"
           />
           <div className="flex flex-col gap-5">
@@ -72,6 +74,7 @@ export const Route = createFileRoute("/news/$slug")({
           title: loaderData.post.title,
           description: loaderData.post.excerpt,
           path: `/news/${loaderData.post.slug}`,
+          jsonLd: [articleJsonLd(loaderData.post)],
         })
       : { meta: [{ title: "Article not found" }] },
   component: NewsArticlePage,

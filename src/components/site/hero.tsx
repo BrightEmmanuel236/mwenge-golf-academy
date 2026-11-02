@@ -28,6 +28,7 @@ export function Hero({
           source={image.source}
           alt={image.alt}
           focal={image.focal}
+          variants={image.variants}
           className="absolute inset-0 aspect-auto h-full"
         />
         <div className="absolute inset-0 flex items-end">

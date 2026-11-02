@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StyleGuideRouteImport } from './routes/style-guide'
 import { Route as YouthDevelopmentRouteImport } from './routes/youth-development'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
@@ -54,6 +55,11 @@ const GalleryRoute = GalleryRouteImport.update({
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StyleGuideRoute = StyleGuideRouteImport.update({
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/partners'
+    | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
     | '/events/$slug'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/partners'
+    | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
     | '/events/$slug'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/partners'
+    | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
     | '/events/$slug'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   PartnersRoute: typeof PartnersRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StyleGuideRoute: typeof StyleGuideRoute
   YouthDevelopmentRoute: typeof YouthDevelopmentRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       path: '/partners'
       fullPath: '/partners'
       preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/style-guide': {
@@ -461,6 +481,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
   PartnersRoute: PartnersRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StyleGuideRoute: StyleGuideRoute,
   YouthDevelopmentRoute: YouthDevelopmentRoute,
   EventsSlugRoute: EventsSlugRoute,

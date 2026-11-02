@@ -22,6 +22,7 @@ export function EventCard({ event }: { event: AcademyEvent }) {
         source={event.image.source}
         alt={event.image.alt}
         focal={event.image.focal}
+        variants={event.image.variants}
       />
       <CardBody className="flex-1 flex-row gap-5">
         <time

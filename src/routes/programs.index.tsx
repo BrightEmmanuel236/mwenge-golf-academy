@@ -8,6 +8,7 @@ import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
+import { AudiencePathways } from "@/components/site/audience-pathways";
 import { ProgramList } from "@/components/site/program-list";
 import { Button } from "@/components/ui/button";
 
@@ -24,13 +25,20 @@ function ProgramsPage() {
       />
       <Section space="compact" className="md:py-20">
         <Container>
-          <ProgramList
-            programs={programs}
-            filter={audience}
-            onFilterChange={(value) => {
-              void navigate({ search: { audience: value } });
-            }}
-          />
+          {programs.length > 0 ? (
+            <ProgramList
+              programs={programs}
+              filter={audience}
+              onFilterChange={(value) => {
+                void navigate({ search: { audience: value } });
+              }}
+            />
+          ) : (
+            <AudiencePathways
+              headingLevel="h2"
+              intro="Program details will be published here. In the meantime, tell the academy what you are looking for and it will get back to you."
+            />
+          )}
         </Container>
       </Section>
       <Section tone="sand" space="compact">
