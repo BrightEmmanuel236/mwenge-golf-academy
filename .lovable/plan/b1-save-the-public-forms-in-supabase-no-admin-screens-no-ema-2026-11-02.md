@@ -35,3 +35,12 @@ Make the training enquiry, contact, sponsor and equipment pledge forms really sa
 - Forms go through `createServerFn` handlers that validate with the existing zod schemas from `src/lib/schemas/*`. They load the admin client inside the handler only after validation, check the honeypot and the rate limit (a hashed sender key stored in a small `submission_throttle` table), then insert the contact_person (upsert by email) and the submission in one database function call.
 - `formsConnected` is switched per form; the PreviewNotice remains only for the donation form.
 - AGENTS.md gets a rule: public form writes go only through validated server functions, never through browser inserts.
+
+## Amendments (2026-11-03, approved by client before any B1 code)
+1. **Ships switched off.** Production keeps the "Preview only" notice on every form until B2 staff notifications exist. Saving can be turned on in preview/staging only.
+2. **No safeguarding intake in production** until delivery to the Safeguarding Lead exists. The database refuses the safeguarding topic in B1.
+3. **Existing contacts are never overwritten.** A public submission creates a contact only if the email is new; it never changes an existing contact's name, phone, country or marketing opt-in. What the sender typed is kept on the submission itself.
+4. **Rate limit per email and per IP:** 5 per email and 30 per IP in 10 minutes, stored only as hashes; rows older than 24 hours are purged on every check (no scheduled job).
+5. **Access check script** (`scripts/check-rls-staging.mjs`) uses only the public key against a staging project and fails if any table allows read or write, or any server-only function runs.
+6. **No secrets in .env or VITE_* variables**; a test fails if .env holds an sb_secret_ or service_role key.
+7. **Database SQL is a draft for review only** (`supabase/drafts/b1_public_forms.sql`). Nothing is applied until approved.
