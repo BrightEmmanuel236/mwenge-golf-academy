@@ -32,6 +32,14 @@ Open:
 
 # Back-end requirements (B1 onward, not started; each phase needs approval)
 
+## B1 (plan approved + amended 2026-11-03; SQL drafted, awaiting review, nothing applied)
+- [x] Draft SQL written for review (no migration run).
+- [x] Public-key access check script for staging.
+- [x] Test: no secret keys in .env.
+- [ ] Client review of draft SQL, then apply.
+- [ ] Server functions + form wiring, shipped switched off in production (preview notice stays until B2).
+- [ ] Safeguarding intake stays off until Safeguarding Lead delivery exists.
+
 - [ ] Remove the preview-only notices (`formsConnected`) only once each form saves its submission server-side; confirm to the user only after the save succeeds.
 - [ ] Create the tables in the external Supabase with these rules (RLS on, no anon SELECT on any table):
   - enquiries, pledges, sponsor_enquiries: anon/public INSERT only through a server function with validation + honeypot; SELECT/UPDATE/DELETE staff-only (role checked via a user_roles table and a security-definer has_role function).
