@@ -1,10 +1,12 @@
 import * as React from "react";
 import Link from "@/components/app-link";
 import { Alert } from "@/components/ui/alert";
+import { SubmissionReceived, SubmitError } from "@/components/forms/submission-received";
 import { Button } from "@/components/ui/button";
 import { Checkbox, Input, Textarea } from "@/components/ui/input";
 import { Field } from "@/components/ui/field";
 import { formsConnected } from "@/lib/forms";
+import { sendSubmission } from "@/lib/submit-client";
 import { enquirySchema, type AudienceType } from "@/lib/schemas";
 
 type Values = Record<string, string | boolean>;
@@ -48,6 +50,9 @@ export function EnquiryForm({
   const [values, setValues] = React.useState<Values>({});
   const [errors, setErrors] = React.useState<Errors>({});
   const [submitted, setSubmitted] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [reference, setReference] = React.useState<string | null>(null);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const summaryRef = React.useRef<HTMLDivElement>(null);
   const errorKeys = Object.keys(errors);
 
@@ -67,8 +72,9 @@ export function EnquiryForm({
       }));
     };
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (sending) return;
     const result = enquirySchema.safeParse(buildPayload(audience, values, programSlug));
     if (!result.success) {
       const next: Errors = {};
@@ -81,8 +87,26 @@ export function EnquiryForm({
       return;
     }
     setErrors({});
-    // Back-end phase: send `result.data` to a server action when `formsConnected` is true.
-    if (!formsConnected) setSubmitted(true);
+    setSubmitError(null);
+    if (!formsConnected) {
+      setSubmitted(true);
+      return;
+    }
+    setSending(true);
+    const outcome = await sendSubmission("enquiry", result.data);
+    setSending(false);
+    if (outcome.ok) {
+      setReference(outcome.reference);
+      return;
+    }
+    if (outcome.fieldErrors) setErrors(outcome.fieldErrors);
+    setSubmitError(outcome.message);
+  }
+
+  if (reference) {
+    return (
+      <SubmissionReceived reference={reference} title="Thank you, we have received your enquiry" />
+    );
   }
 
   if (submitted) {
@@ -282,12 +306,13 @@ export function EnquiryForm({
         </label>
       </div>
 
+      {submitError ? <SubmitError message={submitError} /> : null}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" size="lg">
-          Send enquiry
+        <Button type="submit" size="lg" disabled={sending} aria-busy={sending}>
+          {sending ? "Sending…" : "Send enquiry"}
         </Button>
         <p className="text-slate text-sm">
-          Preview only: enquiries are not sent or saved. Read our{" "}
+          {formsConnected ? "" : "Preview only: enquiries are not sent or saved. "}Read our{" "}
           <Link href="/legal/privacy" className="underline underline-offset-4">
             privacy notice
           </Link>

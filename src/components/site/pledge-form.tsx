@@ -6,6 +6,7 @@ import { Checkbox, Input, Select, Textarea } from "@/components/ui/input";
 import { FormSummary } from "@/components/forms/form-summary";
 import { Honeypot } from "@/components/forms/honeypot";
 import { PreviewNotice } from "@/components/forms/preview-notice";
+import { SubmissionReceived, SubmitError } from "@/components/forms/submission-received";
 import { useForm } from "@/components/forms/use-form";
 import { equipmentConditions, pledgeSchema } from "@/lib/schemas";
 
@@ -25,6 +26,7 @@ export function PledgeForm() {
 
   const form = useForm({
     schema: pledgeSchema,
+    kind: "pledge",
     build: ({ text, flag }) => ({
       name: text("name"),
       organization: text("organization"),
@@ -46,6 +48,15 @@ export function PledgeForm() {
       website: text("website"),
     }),
   });
+
+  if (form.reference) {
+    return (
+      <SubmissionReceived
+        reference={form.reference}
+        title="Thank you, we have received your pledge"
+      />
+    );
+  }
 
   if (form.submitted) {
     return (
@@ -258,10 +269,11 @@ export function PledgeForm() {
         <span>The academy may thank me or my organization publicly on the website.</span>
       </label>
 
+      {form.submitError ? <SubmitError message={form.submitError} /> : null}
       <Honeypot onChange={form.bind("website")} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" size="lg">
-          Submit pledge
+        <Button type="submit" size="lg" disabled={form.sending} aria-busy={form.sending}>
+          {form.sending ? "Sending…" : "Submit pledge"}
         </Button>
         <p className="text-slate text-sm">
           Please do not ship anything until the academy confirms.

@@ -1,7 +1,10 @@
--- B1 DRAFT: for review only. NOT applied. Do not run until approved.
+-- B1: save the public forms.
+-- APPLIED on 2026-11-04 to Supabase project oqtefjnofyluwutkimpm ("Mwenge Golf Academy") as migration
+-- 20261104024459 "b1_public_forms". DO NOT RUN AGAIN on that project (it would fail: objects exist).
+-- This file stays as the readable source, and for creating a separate production project later.
+-- Kept outside supabase/migrations/ on purpose: that folder is written by Lovable's migration tool, and a
+-- hand-written file there would look applied when it is not.
 -- PRD refs: §5 (all forms), W1, W3, W4, W9, W10, §8.1-8.2, §9.2-9.3, §10.1-10.2.
--- Kept outside supabase/migrations/ on purpose: that folder is written by the migration tool when a
--- migration actually runs, so a hand-written file there would look applied when it is not.
 
 -- ---------------------------------------------------------------------------------------------
 -- 1. Staff roles (§8.1). Roles live in their own table, never on a profile.
@@ -372,3 +375,52 @@ grant execute on function public.submit_enquiry(jsonb) to service_role;
 grant execute on function public.submit_contact_message(jsonb) to service_role;
 grant execute on function public.submit_sponsor_enquiry(jsonb) to service_role;
 grant execute on function public.submit_equipment_pledge(jsonb) to service_role;
+
+-- ---------------------------------------------------------------------------------------------
+-- 7. Least privilege (added in review). Supabase grants every new table in `public` to anon and
+--    authenticated by default (including TRUNCATE, which row-level security does not cover).
+--    Remove that, then grant back only what staff need. The public never touches these tables:
+--    forms reach them only through the server-side functions above.
+-- ---------------------------------------------------------------------------------------------
+revoke all on public.user_roles, public.contact_person, public.enquiry, public.contact_message,
+  public.sponsor_enquiry, public.equipment_pledge, public.equipment_pledge_item,
+  public.reference_counter, public.submission_throttle from anon, authenticated;
+revoke all on all sequences in schema public from anon, authenticated;
+
+grant select on public.user_roles, public.equipment_pledge_item to authenticated;
+grant select, update on public.contact_person, public.enquiry, public.contact_message,
+  public.sponsor_enquiry, public.equipment_pledge to authenticated;
+
+revoke all on function public.touch_updated_at() from public, anon, authenticated;
+
+-- ---------------------------------------------------------------------------------------------
+-- 8. Staff can work a submission (status, owner, notes) but never rewrite what the sender sent or
+--    its reference (PRD 9.3 integrity; audit trail comes with the admin phase).
+-- ---------------------------------------------------------------------------------------------
+create or replace function public.protect_submission_fields()
+returns trigger language plpgsql set search_path = public as $$
+declare col text;
+begin
+  foreach col in array tg_argv loop
+    if to_jsonb(old) -> col is distinct from to_jsonb(new) -> col then
+      raise exception 'column % is read-only', col using errcode = '42501';
+    end if;
+  end loop;
+  return new;
+end $$;
+revoke all on function public.protect_submission_fields() from public, anon, authenticated;
+
+create trigger enquiry_protect before update on public.enquiry
+  for each row execute function public.protect_submission_fields('reference', 'contact_person_id',
+    'program_slug', 'audience', 'submitted_name', 'submitted_phone', 'organization', 'preferred_start',
+    'message', 'guardian_relationship', 'child_first_name', 'child_age', 'guardian_declaration', 'created_at');
+create trigger contact_message_protect before update on public.contact_message
+  for each row execute function public.protect_submission_fields('reference', 'contact_person_id',
+    'submitted_name', 'submitted_phone', 'topic', 'message', 'created_at');
+create trigger sponsor_enquiry_protect before update on public.sponsor_enquiry
+  for each row execute function public.protect_submission_fields('reference', 'contact_person_id',
+    'organization', 'submitted_name', 'submitted_phone', 'interests', 'message', 'created_at');
+create trigger equipment_pledge_protect before update on public.equipment_pledge
+  for each row execute function public.protect_submission_fields('reference', 'contact_person_id',
+    'submitted_name', 'submitted_phone', 'organization', 'origin_country', 'shipping_plan',
+    'expected_date', 'recognition_opt_in', 'notes', 'created_at');

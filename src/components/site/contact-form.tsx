@@ -4,6 +4,7 @@ import { Input, Select, Textarea } from "@/components/ui/input";
 import { FormSummary } from "@/components/forms/form-summary";
 import { Honeypot } from "@/components/forms/honeypot";
 import { PreviewNotice } from "@/components/forms/preview-notice";
+import { SubmissionReceived, SubmitError } from "@/components/forms/submission-received";
 import { useForm } from "@/components/forms/use-form";
 import { contactSchema, contactTopics } from "@/lib/schemas";
 
@@ -20,6 +21,7 @@ const topicLabels: Record<(typeof contactTopics)[number], string> = {
 export function ContactForm() {
   const form = useForm({
     schema: contactSchema,
+    kind: "contact",
     build: ({ text }) => ({
       name: text("name"),
       email: text("email"),
@@ -29,6 +31,15 @@ export function ContactForm() {
       website: text("website"),
     }),
   });
+
+  if (form.reference) {
+    return (
+      <SubmissionReceived
+        reference={form.reference}
+        title="Thank you, we have received your message"
+      />
+    );
+  }
 
   if (form.submitted) {
     return (
@@ -102,10 +113,11 @@ export function ContactForm() {
           {(a11y) => <Textarea {...a11y} name="message" onChange={form.bind("message")} />}
         </Field>
       </div>
+      {form.submitError ? <SubmitError message={form.submitError} /> : null}
       <Honeypot onChange={form.bind("website")} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" size="lg">
-          Send message
+        <Button type="submit" size="lg" disabled={form.sending} aria-busy={form.sending}>
+          {form.sending ? "Sending…" : "Send message"}
         </Button>
         <p className="text-slate text-sm">We reply within one business day.</p>
       </div>
