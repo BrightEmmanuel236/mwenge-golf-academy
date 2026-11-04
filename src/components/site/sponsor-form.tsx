@@ -4,6 +4,7 @@ import { Checkbox, Input, Textarea } from "@/components/ui/input";
 import { FormSummary } from "@/components/forms/form-summary";
 import { Honeypot } from "@/components/forms/honeypot";
 import { PreviewNotice } from "@/components/forms/preview-notice";
+import { SubmissionReceived, SubmitError } from "@/components/forms/submission-received";
 import { useForm } from "@/components/forms/use-form";
 import { sponsorInterests, sponsorSchema } from "@/lib/schemas";
 
@@ -18,6 +19,7 @@ const interestLabels = {
 export function SponsorForm() {
   const form = useForm({
     schema: sponsorSchema,
+    kind: "sponsor",
     build: ({ text, flag }) => ({
       organization: text("organization"),
       name: text("name"),
@@ -28,6 +30,15 @@ export function SponsorForm() {
       website: text("website"),
     }),
   });
+
+  if (form.reference) {
+    return (
+      <SubmissionReceived
+        reference={form.reference}
+        title="Thank you, we have received your enquiry"
+      />
+    );
+  }
 
   if (form.submitted) {
     return (
@@ -123,10 +134,11 @@ export function SponsorForm() {
       <Field id="sp-message" label="Message" error={err("message")} required>
         {(a11y) => <Textarea {...a11y} name="message" onChange={form.bind("message")} />}
       </Field>
+      {form.submitError ? <SubmitError message={form.submitError} /> : null}
       <Honeypot onChange={form.bind("website")} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" size="lg">
-          Send enquiry
+        <Button type="submit" size="lg" disabled={form.sending} aria-busy={form.sending}>
+          {form.sending ? "Sending…" : "Send enquiry"}
         </Button>
         <p className="text-slate text-sm">The academy will follow up with you directly.</p>
       </div>

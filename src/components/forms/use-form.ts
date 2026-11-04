@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { ZodType } from "zod";
 import { formsConnected } from "@/lib/forms";
+import { sendSubmission } from "@/lib/submit-client";
+import type { SubmissionKind } from "@/lib/submissions";
 
 export type FormValues = Record<string, string | boolean>;
 export type FormErrors = Record<string, string>;
@@ -20,22 +22,29 @@ export const fieldId = (prefix: string, key: string) => `${prefix}-${key.replace
 /**
  * Shared client-side form state: values, schema validation, an accessible error summary that
  * takes focus, and the "preview only" state used while forms are not connected (src/lib/forms.ts).
- * Validation uses the same Zod schema the server will use later.
+ * Validation uses the same Zod schema the server re-runs. When `kind` is given and forms are
+ * connected, a valid submission is sent to the server; success is only shown once it is saved.
  */
 export function useForm({
   schema,
   build,
   initialValues,
+  kind,
 }: {
   schema: ZodType;
   /** Turns raw field values into the object the schema expects. Runs on submit. */
   build: (readers: FormReaders) => unknown;
   /** Pre-filled values, for example a donation purpose chosen on the previous page. */
   initialValues?: FormValues;
+  /** Which public form this is. Omit for forms that must stay preview-only (donations). */
+  kind?: SubmissionKind;
 }) {
   const [values, setValues] = React.useState<FormValues>(initialValues ?? {});
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [submitted, setSubmitted] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [reference, setReference] = React.useState<string | null>(null);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const summaryRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -65,8 +74,9 @@ export function useForm({
   };
   const flag = (key: string): boolean => values[key] === true;
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (sending) return;
     const result = schema.safeParse(build({ values, text, flag }));
     if (!result.success) {
       const next: FormErrors = {};
@@ -79,9 +89,35 @@ export function useForm({
       return;
     }
     setErrors({});
-    // Back-end phase: send `result.data` to a server action when `formsConnected` is true.
-    if (!formsConnected) setSubmitted(true);
+    setSubmitError(null);
+    if (!kind || !formsConnected) {
+      setSubmitted(true);
+      return;
+    }
+    setSending(true);
+    const outcome = await sendSubmission(kind, result.data);
+    setSending(false);
+    if (outcome.ok) {
+      setReference(outcome.reference);
+      return;
+    }
+    if (outcome.fieldErrors) setErrors(outcome.fieldErrors);
+    setSubmitError(outcome.message);
   }
 
-  return { values, errors, setErrors, submitted, summaryRef, setValue, bind, text, flag, onSubmit };
+  return {
+    values,
+    errors,
+    setErrors,
+    submitted,
+    sending,
+    reference,
+    submitError,
+    summaryRef,
+    setValue,
+    bind,
+    text,
+    flag,
+    onSubmit,
+  };
 }

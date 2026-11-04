@@ -30,4 +30,7 @@ export const optionalMessage = (max = 2000) => z.string().trim().max(max).option
 export const countryField = trimmed("Country", 80);
 
 /** Honeypot: real users leave this empty. Bot protection (Turnstile) is added in the back-end phase. */
-export const honeypot = z.string().max(0).optional();
+export const honeypot = z
+  .string()
+  .max(0, { error: "This form could not be sent. Reload the page and try again." })
+  .optional();
