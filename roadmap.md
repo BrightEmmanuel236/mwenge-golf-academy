@@ -30,15 +30,27 @@ Open:
 - [ ] Decision: approve sharp as a dev dependency for scripts/optimize-images.mjs.
 - [ ] Re-measure page load speed on the deployed host (home and About still above 2.5 s in Claude's test).
 
-# Back-end requirements (B1 onward, not started; each phase needs approval)
+# Back-end (B phases)
 
-## B1 (plan approved + amended 2026-11-03; SQL drafted, awaiting review, nothing applied)
-- [x] Draft SQL written for review (no migration run).
-- [x] Public-key access check script for staging.
-- [x] Test: no secret keys in .env.
-- [ ] Client review of draft SQL, then apply.
-- [ ] Server functions + form wiring, shipped switched off in production (preview notice stays until B2).
-- [ ] Safeguarding intake stays off until Safeguarding Lead delivery exists.
+## B1 (installed 2026-11-04, switched off in production)
+- [x] Draft SQL, public-key staging check script, no-secrets-in-.env test.
+- [x] B1 patch installed (21 files): server functions + wiring for enquiry, contact, sponsor, pledge forms; 168 tests passed.
+- [ ] Confirm the live database matches the reviewed SQL (run scripts/check-rls-staging.mjs against staging).
+- [ ] Safeguarding intake stays off until the client names the Safeguarding Lead.
+
+## B2 emails (installed 2026-11-05)
+- [x] B2 patch installed (19 files): staff notification emails after save, email_log, retry route; 204 tests passed.
+- [x] B2.1 installed (4 files): idempotency keys so retries never send duplicates; 210 tests passed; build passed.
+- [ ] Set up Resend + sending domain; add STAFF_NOTIFY_EMAILS / SAFEGUARDING_EMAILS in host settings.
+- [ ] Switch saving on (VITE_FORMS_MODE=save + FORMS_SAVING_ENABLED=true) once emails are verified end-to-end.
+- [ ] Not yet tested against the real Resend service.
+
+## Next phases (each needs approval)
+- [ ] B3 staff login + admin inbox (turn on leaked-password protection first).
+- [ ] B4 media library (Supabase Storage).
+- [ ] B5 admin-managed programs/events/news.
+- [ ] B6 donations (awaiting payment provider).
+- [ ] B7 talent profiles with consent records.
 
 - [ ] Remove the preview-only notices (`formsConnected`) only once each form saves its submission server-side; confirm to the user only after the save succeeds.
 - [ ] Create the tables in the external Supabase with these rules (RLS on, no anon SELECT on any table):
