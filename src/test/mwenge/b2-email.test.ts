@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { createServer, type Server } from "node:http";
+import { afterEach, describe, expect, it } from "vitest";
 import {
   isEmailAddress,
   parseAddressList,
@@ -607,5 +608,144 @@ describe("safeguarding intake", () => {
       }),
     );
     expect(result).toMatchObject({ ok: false, reason: "unavailable" });
+  });
+});
+
+describe("idempotency keys", () => {
+  const config: EmailConfig = {
+    apiKey: "k",
+    from: "A <a@x.org>",
+    apiUrl: "https://api.resend.com/emails",
+  };
+  const message: EmailMessage = { to: ["t@x.org"], subject: "S", text: "T", html: "<p>T</p>" };
+  const headerFor = async (idempotencyKey: string | undefined) => {
+    let headers: Record<string, string> = {};
+    await sendEmail(config, { ...message, idempotencyKey }, (async (
+      _u: string,
+      init: RequestInit,
+    ) => {
+      headers = init.headers as Record<string, string>;
+      return new Response("{}", { status: 200 });
+    }) as unknown as typeof fetch);
+    return headers;
+  };
+
+  it("sends the key in the Idempotency-Key header, and omits it when absent or unusable", async () => {
+    expect(
+      (await headerFor("staff_notification/MGA-ENQ-2026-0001/abc123"))["idempotency-key"],
+    ).toBe("staff_notification/MGA-ENQ-2026-0001/abc123");
+    expect(await headerFor(undefined)).not.toHaveProperty("idempotency-key");
+    expect(await headerFor("")).not.toHaveProperty("idempotency-key");
+    expect(await headerFor("has space")).not.toHaveProperty("idempotency-key");
+    expect(await headerFor("line\nbreak")).not.toHaveProperty("idempotency-key");
+    expect(await headerFor("x".repeat(257))).not.toHaveProperty("idempotency-key");
+    expect(await headerFor("x".repeat(256))).toHaveProperty("idempotency-key");
+  });
+
+  it("uses template/reference/fingerprint, the same on every retry of the same email", async () => {
+    const keys: (string | undefined)[] = [];
+    const { deps } = setup();
+    deps.send = async (_c, m) => {
+      keys.push(m.idempotencyKey);
+      return { ok: false, code: "http_500" };
+    };
+    await sendTemplate(enquiry.reference, "staff_notification", deps);
+    await sendTemplate(enquiry.reference, "staff_notification", deps); // claim re-opens a failed email
+    expect(keys[0]).toMatch(/^staff_notification\/MGA-ENQ-2026-0001\/[0-9a-f]{16}$/);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
+  it("gives a different key when the email really is different (recipients changed), so the provider never sees a reused key with another payload", async () => {
+    const keyWith = async (staff: string) => {
+      let key: string | undefined;
+      const { deps } = setup({ env: { ...ENV, STAFF_NOTIFY_EMAILS: staff } });
+      deps.send = async (_c, m) => {
+        key = m.idempotencyKey;
+        return { ok: true, id: "i" };
+      };
+      await sendTemplate(enquiry.reference, "staff_notification", deps);
+      return key;
+    };
+    const a = await keyWith("one@example.org");
+    expect(await keyWith("one@example.org")).toBe(a);
+    expect(await keyWith("one@example.org, two@example.org")).not.toBe(a);
+  });
+
+  it("keeps different emails for the same submission apart", async () => {
+    const keys = new Set<string | undefined>();
+    const { deps } = setup();
+    deps.send = async (_c, m) => {
+      keys.add(m.idempotencyKey);
+      return { ok: true, id: "i" };
+    };
+    await notifySubmission(enquiry.reference, "enquiry", deps);
+    expect(keys.size).toBe(2);
+  });
+});
+
+describe("a lost reply cannot cause a duplicate email (real HTTP, provider remembers keys)", () => {
+  let server: Server | undefined;
+  afterEach(
+    () => new Promise<void>((resolve) => (server ? server.close(() => resolve()) : resolve())),
+  );
+
+  /** Behaves like the provider: accepts the email, remembers the key, and (once) drops the connection before replying. */
+  async function provider(dropFirstReply: boolean) {
+    const delivered: string[] = [];
+    const remembered = new Map<string, string>();
+    let first = true;
+    server = createServer((req, res) => {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        const key = String(req.headers["idempotency-key"] ?? "");
+        let id = remembered.get(key);
+        if (!id) {
+          id = `email-${delivered.length + 1}`;
+          delivered.push(JSON.parse(body).subject);
+          if (key) remembered.set(key, id);
+        }
+        if (dropFirstReply && first) {
+          first = false;
+          req.socket.destroy();
+          return;
+        }
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(JSON.stringify({ id }));
+      });
+    });
+    await new Promise<void>((resolve) => server!.listen(0, "127.0.0.1", () => resolve()));
+    const port = (server.address() as { port: number }).port;
+    return { delivered, url: `http://127.0.0.1:${port}/emails` };
+  }
+
+  it("with the key: the retry after a dropped reply delivers exactly one email", async () => {
+    const { delivered, url } = await provider(true);
+    const db = fakeDb({ [enquiry.reference]: enquiry });
+    const deps: NotifyDeps = {
+      rpc: db.rpc,
+      env: { ...ENV, RESEND_API_URL: url },
+      log: () => undefined,
+    };
+    expect(await sendTemplate(enquiry.reference, "staff_notification", deps)).toBe("failed"); // the reply was lost
+    expect(delivered).toHaveLength(1); // ...but the provider did send it
+    const summary = await retryFailedEmails(deps);
+    expect(summary).toMatchObject({ attempted: 1, sent: 1 });
+    expect(delivered).toHaveLength(1); // the retry did NOT send a second copy
+    expect([...db.log.values()][0]?.status).toBe("sent");
+  });
+
+  it("without the key the same situation would send twice (why the key matters)", async () => {
+    const { delivered, url } = await provider(true);
+    const config = readEmailConfig({ ...ENV, RESEND_API_URL: url })!;
+    const message: EmailMessage = {
+      to: ["t@x.org"],
+      subject: "Same email",
+      text: "T",
+      html: "<p>T</p>",
+    };
+    expect(await sendEmail(config, message)).toEqual({ ok: false, code: "network" });
+    expect(await sendEmail(config, message)).toMatchObject({ ok: true });
+    expect(delivered).toHaveLength(2);
   });
 });

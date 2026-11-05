@@ -16,36 +16,39 @@ export type Database = {
     Tables: {
       contact_message: {
         Row: {
-          contact_person_id: string
+          contact_person_id: string | null
           created_at: string
           id: string
           message: string
           reference: string
           status: Database["public"]["Enums"]["message_status"]
+          submitted_email: string | null
           submitted_name: string
           submitted_phone: string | null
           topic: Database["public"]["Enums"]["contact_topic"]
           updated_at: string
         }
         Insert: {
-          contact_person_id: string
+          contact_person_id?: string | null
           created_at?: string
           id?: string
           message: string
           reference: string
           status?: Database["public"]["Enums"]["message_status"]
+          submitted_email?: string | null
           submitted_name: string
           submitted_phone?: string | null
           topic: Database["public"]["Enums"]["contact_topic"]
           updated_at?: string
         }
         Update: {
-          contact_person_id?: string
+          contact_person_id?: string | null
           created_at?: string
           id?: string
           message?: string
           reference?: string
           status?: Database["public"]["Enums"]["message_status"]
+          submitted_email?: string | null
           submitted_name?: string
           submitted_phone?: string | null
           topic?: Database["public"]["Enums"]["contact_topic"]
@@ -90,6 +93,48 @@ export type Database = {
           marketing_opt_in?: boolean
           name?: string
           phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_log: {
+        Row: {
+          attempts: number
+          created_at: string
+          error_code: string | null
+          id: string
+          provider_id: string | null
+          recipient_kind: string
+          reference: string
+          sent_at: string | null
+          status: Database["public"]["Enums"]["email_status"]
+          template: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          provider_id?: string | null
+          recipient_kind: string
+          reference: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["email_status"]
+          template: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          provider_id?: string | null
+          recipient_kind?: string
+          reference?: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["email_status"]
+          template?: string
           updated_at?: string
         }
         Relationships: []
@@ -390,6 +435,10 @@ export type Database = {
         Args: { _email_hash: string; _ip_hash: string }
         Returns: boolean
       }
+      claim_email: {
+        Args: { _recipient_kind: string; _reference: string; _template: string }
+        Returns: boolean
+      }
       ensure_contact: {
         Args: {
           _country: string
@@ -399,6 +448,17 @@ export type Database = {
         }
         Returns: string
       }
+      finish_email: {
+        Args: {
+          _error_code: string
+          _ok: boolean
+          _provider_id: string
+          _reference: string
+          _template: string
+        }
+        Returns: undefined
+      }
+      get_submission_for_email: { Args: { _reference: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -407,10 +467,12 @@ export type Database = {
         Returns: boolean
       }
       is_ops_staff: { Args: { _user_id: string }; Returns: boolean }
+      list_emails_to_retry: { Args: { _limit: number }; Returns: Json }
       next_reference: { Args: { _kind: string }; Returns: string }
       submit_contact_message: { Args: { p: Json }; Returns: string }
       submit_enquiry: { Args: { p: Json }; Returns: string }
       submit_equipment_pledge: { Args: { p: Json }; Returns: string }
+      submit_safeguarding_concern: { Args: { p: Json }; Returns: string }
       submit_sponsor_enquiry: { Args: { p: Json }; Returns: string }
     }
     Enums: {
@@ -429,6 +491,7 @@ export type Database = {
         | "media"
         | "other"
         | "safeguarding"
+      email_status: "pending" | "sent" | "failed"
       enquiry_status:
         | "new"
         | "contacted"
@@ -592,6 +655,7 @@ export const Constants = {
         "other",
         "safeguarding",
       ],
+      email_status: ["pending", "sent", "failed"],
       enquiry_status: [
         "new",
         "contacted",
