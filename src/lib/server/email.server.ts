@@ -9,6 +9,11 @@ export interface EmailMessage {
   text: string;
   html: string;
   replyTo?: string | undefined;
+  /**
+   * Sent as the provider's `Idempotency-Key` header: the same key means "the same email", so retrying a
+   * request whose reply was lost cannot send it twice (the provider remembers keys for 24 hours).
+   */
+  idempotencyKey?: string | undefined;
 }
 
 export type SendResult = { ok: true; id: string | null } | { ok: false; code: string };
@@ -58,7 +63,13 @@ export async function sendEmail(
   try {
     const response = await fetchImpl(config.apiUrl, {
       method: "POST",
-      headers: { authorization: `Bearer ${config.apiKey}`, "content-type": "application/json" },
+      headers: {
+        authorization: `Bearer ${config.apiKey}`,
+        "content-type": "application/json",
+        ...(message.idempotencyKey && /^[\x21-\x7e]{1,256}$/.test(message.idempotencyKey)
+          ? { "idempotency-key": message.idempotencyKey }
+          : {}),
+      },
       body: JSON.stringify({
         from: config.from,
         to: message.to,

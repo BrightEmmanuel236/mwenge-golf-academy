@@ -1,4 +1,4 @@
-import type { SubmitDeps } from "./submit.server";
+import { sha256Hex, type SubmitDeps } from "./submit.server";
 import {
   isEmailAddress,
   parseAddressList,
@@ -108,10 +108,18 @@ export async function sendTemplate(
       return "failed";
     }
 
+    const built = buildEmail(template, data);
+    // Same email => same key, so a retry after a lost reply cannot send twice. The key includes a
+    // fingerprint of who it goes to and what it says: if settings change so the email really is
+    // different, it gets a new key (the provider rejects a reused key with a different payload).
+    const fingerprint = (
+      await sha256Hex(JSON.stringify({ from: config.from, to, replyTo, subject: built.subject }))
+    ).slice(0, 16);
     const result = await (deps.send ?? sendEmail)(config, {
       to,
       replyTo,
-      ...buildEmail(template, data),
+      idempotencyKey: `${template}/${reference}/${fingerprint}`,
+      ...built,
     });
     if (result.ok) {
       await finish(true, null, result.id);
