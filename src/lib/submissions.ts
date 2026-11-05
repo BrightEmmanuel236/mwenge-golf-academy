@@ -24,3 +24,6 @@ export const failureMessages: Record<SubmitFailureReason, string> = {
   unavailable: "Something went wrong on our side. Nothing was sent. Please try again in a moment.",
   disabled: "Sending is not switched on for this site yet. Nothing was sent.",
 };
+
+/** Result of a safeguarding concern. `alerted` is false when it was saved but the alert email has not gone out yet. */
+export type SafeguardingResult = { ok: true; reference: string; alerted: boolean } | SubmitFailure;

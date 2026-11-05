@@ -27,6 +27,8 @@ export interface SubmitDeps {
   ip: string | null;
   /** Receives non-identifying diagnostics only (kind, error code). */
   log?: (message: string) => void;
+  /** Sends the emails for a saved submission. It can never change the result: failures are logged and retried. */
+  notify?: ((kind: SubmissionKind, reference: string) => Promise<unknown>) | undefined;
 }
 
 const schemas = {
@@ -116,6 +118,13 @@ export async function processSubmission(input: unknown, deps: SubmitDeps): Promi
     // Log the code only: error text from the database can quote the submitted values.
     log(`submit: ${kind} not saved (${saved.error?.code ?? "no reference returned"})`);
     return fail("unavailable");
+  }
+  if (deps.notify) {
+    try {
+      await deps.notify(kind, saved.data);
+    } catch {
+      log(`submit: ${kind} saved, but sending its emails failed; the retry sweep will pick it up`);
+    }
   }
   return { ok: true, reference: saved.data };
 }

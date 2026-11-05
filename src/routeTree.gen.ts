@@ -17,6 +17,7 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StyleGuideRouteImport } from './routes/style-guide'
 import { Route as YouthDevelopmentRouteImport } from './routes/youth-development'
+import { Route as ApiEmailRetryRouteImport } from './routes/api.email-retry'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as EventsSlugRouteImport } from './routes/events.$slug'
 import { Route as ImpactIndexRouteImport } from './routes/impact.index'
@@ -70,6 +71,11 @@ const StyleGuideRoute = StyleGuideRouteImport.update({
 const YouthDevelopmentRoute = YouthDevelopmentRouteImport.update({
   id: '/youth-development',
   path: '/youth-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEmailRetryRoute = ApiEmailRetryRouteImport.update({
+  id: '/api/email-retry',
+  path: '/api/email-retry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsIndexRoute = EventsIndexRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
   '/news/$slug': typeof NewsSlugRoute
@@ -176,6 +183,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
   '/news/$slug': typeof NewsSlugRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
   '/news/$slug': typeof NewsSlugRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
     | '/news/$slug'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
     | '/news/$slug'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
     | '/news/$slug'
@@ -300,6 +312,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StyleGuideRoute: typeof StyleGuideRoute
   YouthDevelopmentRoute: typeof YouthDevelopmentRoute
+  ApiEmailRetryRoute: typeof ApiEmailRetryRoute
   EventsSlugRoute: typeof EventsSlugRoute
   LegalSlugRoute: typeof LegalSlugRoute
   NewsSlugRoute: typeof NewsSlugRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/youth-development'
       fullPath: '/youth-development'
       preLoaderRoute: typeof YouthDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/email-retry': {
+      id: '/api/email-retry'
+      path: '/api/email-retry'
+      fullPath: '/api/email-retry'
+      preLoaderRoute: typeof ApiEmailRetryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/': {
@@ -484,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StyleGuideRoute: StyleGuideRoute,
   YouthDevelopmentRoute: YouthDevelopmentRoute,
+  ApiEmailRetryRoute: ApiEmailRetryRoute,
   EventsSlugRoute: EventsSlugRoute,
   LegalSlugRoute: LegalSlugRoute,
   NewsSlugRoute: NewsSlugRoute,
