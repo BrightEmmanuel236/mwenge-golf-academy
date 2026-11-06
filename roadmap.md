@@ -61,3 +61,10 @@ Open:
 ## Interim photos
 - [x] 8 client-supplied stock golf photos wired in (home, about, youth, programs, news), labelled "Placeholder image", kept out of gallery/impact/events.
 - [ ] B-phase/admin: replace `src/lib/content/photos.ts` with the admin media library on Supabase Storage (PRD 7.7) so staff upload, crop (focal point), caption and swap photos.
+
+## B3-core (staff login + admin inbox)
+- [x] Database reviewed (2026-11-06): B1/B2 in place; no staff users, roles, audit log or private schema yet.
+- [x] Draft SQL: supabase/drafts/b3_core.sql (not applied) — private role helpers, MFA (aal2) for all staff roles, notes/owner columns, audit log, safeguarding update rule, first super-admin snippet.
+- [ ] Review draft, apply to staging then production — awaiting owner approval.
+- [ ] Login, MFA, inbox screens — awaiting Claude's B3 patch.
+- [ ] Create first super-admin (emmanuelbright236@gmail.com) after signup.
