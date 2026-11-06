@@ -87,3 +87,13 @@ commit;
 -- 6. First super-admin (run ONCE, after emmanuelbright236@gmail.com has signed up and confirmed):
 -- insert into public.user_roles (user_id, role)
 -- select id, 'super_admin' from auth.users where email = 'emmanuelbright236@gmail.com';
+
+-- 7. Staff names for the inbox and audit log (staff-only, no public access).
+create or replace function public.staff_directory()
+returns table (user_id uuid, email text) language sql stable security definer set search_path = public, private as $$
+  select u.id, u.email::text from auth.users u
+  where exists (select 1 from public.user_roles r where r.user_id = u.id)
+    and (private.is_ops_staff(auth.uid()) or private.has_role(auth.uid(), 'safeguarding_lead'))
+$$;
+revoke all on function public.staff_directory() from public, anon;
+grant execute on function public.staff_directory() to authenticated;
