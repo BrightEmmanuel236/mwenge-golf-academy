@@ -14,12 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_log: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          field: string
+          id: number
+          is_safeguarding: boolean
+          new_value: string | null
+          old_value: string | null
+          reference: string
+          table_name: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          field: string
+          id?: never
+          is_safeguarding?: boolean
+          new_value?: string | null
+          old_value?: string | null
+          reference: string
+          table_name: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          field?: string
+          id?: never
+          is_safeguarding?: boolean
+          new_value?: string | null
+          old_value?: string | null
+          reference?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
       contact_message: {
         Row: {
           contact_person_id: string | null
           created_at: string
           id: string
+          internal_notes: string | null
           message: string
+          owner_id: string | null
           reference: string
           status: Database["public"]["Enums"]["message_status"]
           submitted_email: string | null
@@ -32,7 +70,9 @@ export type Database = {
           contact_person_id?: string | null
           created_at?: string
           id?: string
+          internal_notes?: string | null
           message: string
+          owner_id?: string | null
           reference: string
           status?: Database["public"]["Enums"]["message_status"]
           submitted_email?: string | null
@@ -45,7 +85,9 @@ export type Database = {
           contact_person_id?: string | null
           created_at?: string
           id?: string
+          internal_notes?: string | null
           message?: string
+          owner_id?: string | null
           reference?: string
           status?: Database["public"]["Enums"]["message_status"]
           submitted_email?: string | null
@@ -219,9 +261,11 @@ export type Database = {
           created_at: string
           expected_date: string | null
           id: string
+          internal_notes: string | null
           notes: string | null
           organization: string | null
           origin_country: string
+          owner_id: string | null
           recognition_opt_in: boolean
           reference: string
           shipping_plan: Database["public"]["Enums"]["shipping_plan"]
@@ -235,9 +279,11 @@ export type Database = {
           created_at?: string
           expected_date?: string | null
           id?: string
+          internal_notes?: string | null
           notes?: string | null
           organization?: string | null
           origin_country: string
+          owner_id?: string | null
           recognition_opt_in?: boolean
           reference: string
           shipping_plan: Database["public"]["Enums"]["shipping_plan"]
@@ -251,9 +297,11 @@ export type Database = {
           created_at?: string
           expected_date?: string | null
           id?: string
+          internal_notes?: string | null
           notes?: string | null
           organization?: string | null
           origin_country?: string
+          owner_id?: string | null
           recognition_opt_in?: boolean
           reference?: string
           shipping_plan?: Database["public"]["Enums"]["shipping_plan"]
@@ -337,6 +385,7 @@ export type Database = {
           created_at: string
           id: string
           interests: string[]
+          internal_notes: string | null
           message: string
           organization: string
           owner_id: string | null
@@ -351,6 +400,7 @@ export type Database = {
           created_at?: string
           id?: string
           interests: string[]
+          internal_notes?: string | null
           message: string
           organization: string
           owner_id?: string | null
@@ -365,6 +415,7 @@ export type Database = {
           created_at?: string
           id?: string
           interests?: string[]
+          internal_notes?: string | null
           message?: string
           organization?: string
           owner_id?: string | null
@@ -459,16 +510,15 @@ export type Database = {
         Returns: undefined
       }
       get_submission_for_email: { Args: { _reference: string }; Returns: Json }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      is_ops_staff: { Args: { _user_id: string }; Returns: boolean }
       list_emails_to_retry: { Args: { _limit: number }; Returns: Json }
       next_reference: { Args: { _kind: string }; Returns: string }
+      staff_directory: {
+        Args: never
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
       submit_contact_message: { Args: { p: Json }; Returns: string }
       submit_enquiry: { Args: { p: Json }; Returns: string }
       submit_equipment_pledge: { Args: { p: Json }; Returns: string }
