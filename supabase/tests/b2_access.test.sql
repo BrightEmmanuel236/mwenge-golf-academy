@@ -14,6 +14,7 @@ from t2_users;
 create function pg_temp.act_as(_role text, _label text default null) returns void language plpgsql as $$
 begin
   perform set_config('request.jwt.claim.sub', coalesce((select id::text from t2_users where label = _label), ''), true);
+  perform set_config('request.jwt.claims', json_build_object('sub', nullif(current_setting('request.jwt.claim.sub', true), ''), 'aal', 'aal2')::text, true);
   execute format('set local role %I', _role);
 end $$;
 

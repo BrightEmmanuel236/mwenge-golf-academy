@@ -68,3 +68,5 @@ Open:
 - [ ] Review draft, apply to staging then production — awaiting owner approval.
 - [ ] Login, MFA, inbox screens — awaiting Claude's B3 patch.
 - [ ] Create first super-admin (emmanuelbright236@gmail.com) after signup.
+
+- [x] B3 patch installed (Claude). Open: apply b3_hardening.sql (needs approval), turn off public sign-ups, confirm TOTP MFA, create first super-admin.
