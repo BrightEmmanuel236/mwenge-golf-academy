@@ -11,12 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StyleGuideRouteImport } from './routes/style-guide'
 import { Route as YouthDevelopmentRouteImport } from './routes/youth-development'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as ApiEmailRetryRouteImport } from './routes/api.email-retry'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as EventsSlugRouteImport } from './routes/events.$slug'
@@ -29,6 +32,8 @@ import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 import { Route as SupportIndexRouteImport } from './routes/support.index'
 import { Route as SupportEquipmentRouteImport } from './routes/support.equipment'
 import { Route as SupportSponsorRouteImport } from './routes/support.sponsor'
+import { Route as AdminKindIndexRouteImport } from './routes/admin.$kind.index'
+import { Route as AdminKindReferenceRouteImport } from './routes/admin.$kind.$reference'
 import { Route as ImpactTalentsSlugRouteImport } from './routes/impact.talents.$slug'
 import { Route as SupportDonateIndexRouteImport } from './routes/support.donate.index'
 import { Route as SupportDonateThankYouRouteImport } from './routes/support.donate.thank-you'
@@ -41,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -72,6 +82,16 @@ const YouthDevelopmentRoute = YouthDevelopmentRouteImport.update({
   id: '/youth-development',
   path: '/youth-development',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ApiEmailRetryRoute = ApiEmailRetryRouteImport.update({
   id: '/api/email-retry',
@@ -133,6 +153,16 @@ const SupportSponsorRoute = SupportSponsorRouteImport.update({
   path: '/support/sponsor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminKindIndexRoute = AdminKindIndexRouteImport.update({
+  id: '/$kind/',
+  path: '/$kind/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminKindReferenceRoute = AdminKindReferenceRouteImport.update({
+  id: '/$kind/$reference',
+  path: '/$kind/$reference',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ImpactTalentsSlugRoute = ImpactTalentsSlugRouteImport.update({
   id: '/impact/talents/$slug',
   path: '/impact/talents/$slug',
@@ -152,12 +182,14 @@ const SupportDonateThankYouRoute = SupportDonateThankYouRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
@@ -165,13 +197,16 @@ export interface FileRoutesByFullPath {
   '/programs/$slug': typeof ProgramsSlugRoute
   '/support/equipment': typeof SupportEquipmentRoute
   '/support/sponsor': typeof SupportSponsorRoute
+  '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
   '/impact/': typeof ImpactIndexRoute
   '/news/': typeof NewsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/support/': typeof SupportIndexRoute
+  '/admin/$kind/$reference': typeof AdminKindReferenceRoute
   '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
   '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/admin/$kind/': typeof AdminKindIndexRoute
   '/support/donate/': typeof SupportDonateIndexRoute
 }
 export interface FileRoutesByTo {
@@ -183,6 +218,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
@@ -190,25 +226,30 @@ export interface FileRoutesByTo {
   '/programs/$slug': typeof ProgramsSlugRoute
   '/support/equipment': typeof SupportEquipmentRoute
   '/support/sponsor': typeof SupportSponsorRoute
+  '/admin': typeof AdminIndexRoute
   '/events': typeof EventsIndexRoute
   '/impact': typeof ImpactIndexRoute
   '/news': typeof NewsIndexRoute
   '/programs': typeof ProgramsIndexRoute
   '/support': typeof SupportIndexRoute
+  '/admin/$kind/$reference': typeof AdminKindReferenceRoute
   '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
   '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/admin/$kind': typeof AdminKindIndexRoute
   '/support/donate': typeof SupportDonateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/style-guide': typeof StyleGuideRoute
   '/youth-development': typeof YouthDevelopmentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/api/email-retry': typeof ApiEmailRetryRoute
   '/events/$slug': typeof EventsSlugRoute
   '/legal/$slug': typeof LegalSlugRoute
@@ -216,13 +257,16 @@ export interface FileRoutesById {
   '/programs/$slug': typeof ProgramsSlugRoute
   '/support/equipment': typeof SupportEquipmentRoute
   '/support/sponsor': typeof SupportSponsorRoute
+  '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
   '/impact/': typeof ImpactIndexRoute
   '/news/': typeof NewsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/support/': typeof SupportIndexRoute
+  '/admin/$kind/$reference': typeof AdminKindReferenceRoute
   '/impact/talents/$slug': typeof ImpactTalentsSlugRoute
   '/support/donate/thank-you': typeof SupportDonateThankYouRoute
+  '/admin/$kind/': typeof AdminKindIndexRoute
   '/support/donate/': typeof SupportDonateIndexRoute
 }
 export interface FileRouteTypes {
@@ -230,12 +274,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/gallery'
     | '/partners'
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/admin/login'
     | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
@@ -243,13 +289,16 @@ export interface FileRouteTypes {
     | '/programs/$slug'
     | '/support/equipment'
     | '/support/sponsor'
+    | '/admin/'
     | '/events/'
     | '/impact/'
     | '/news/'
     | '/programs/'
     | '/support/'
+    | '/admin/$kind/$reference'
     | '/impact/talents/$slug'
     | '/support/donate/thank-you'
+    | '/admin/$kind/'
     | '/support/donate/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -261,6 +310,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/admin/login'
     | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
@@ -268,24 +318,29 @@ export interface FileRouteTypes {
     | '/programs/$slug'
     | '/support/equipment'
     | '/support/sponsor'
+    | '/admin'
     | '/events'
     | '/impact'
     | '/news'
     | '/programs'
     | '/support'
+    | '/admin/$kind/$reference'
     | '/impact/talents/$slug'
     | '/support/donate/thank-you'
+    | '/admin/$kind'
     | '/support/donate'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/gallery'
     | '/partners'
     | '/sitemap.xml'
     | '/style-guide'
     | '/youth-development'
+    | '/admin/login'
     | '/api/email-retry'
     | '/events/$slug'
     | '/legal/$slug'
@@ -293,19 +348,23 @@ export interface FileRouteTypes {
     | '/programs/$slug'
     | '/support/equipment'
     | '/support/sponsor'
+    | '/admin/'
     | '/events/'
     | '/impact/'
     | '/news/'
     | '/programs/'
     | '/support/'
+    | '/admin/$kind/$reference'
     | '/impact/talents/$slug'
     | '/support/donate/thank-you'
+    | '/admin/$kind/'
     | '/support/donate/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   PartnersRoute: typeof PartnersRoute
@@ -343,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -386,6 +452,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/youth-development'
       preLoaderRoute: typeof YouthDevelopmentRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/api/email-retry': {
       id: '/api/email-retry'
@@ -471,6 +551,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SupportSponsorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/$kind/': {
+      id: '/admin/$kind/'
+      path: '/$kind'
+      fullPath: '/admin/$kind/'
+      preLoaderRoute: typeof AdminKindIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/$kind/$reference': {
+      id: '/admin/$kind/$reference'
+      path: '/$kind/$reference'
+      fullPath: '/admin/$kind/$reference'
+      preLoaderRoute: typeof AdminKindReferenceRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/impact/talents/$slug': {
       id: '/impact/talents/$slug'
       path: '/impact/talents/$slug'
@@ -495,9 +589,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminKindReferenceRoute: typeof AdminKindReferenceRoute
+  AdminKindIndexRoute: typeof AdminKindIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminKindReferenceRoute: AdminKindReferenceRoute,
+  AdminKindIndexRoute: AdminKindIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
   PartnersRoute: PartnersRoute,

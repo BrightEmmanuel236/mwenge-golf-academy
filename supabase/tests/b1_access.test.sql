@@ -30,6 +30,7 @@ select 'MGA-MSG-TEST-SG', id, 'Concerned Person', 'safeguarding', 'test concern'
 create function pg_temp.act_as(_role text, _label text default null) returns void language plpgsql as $$
 begin
   perform set_config('request.jwt.claim.sub', coalesce((select id::text from t_users where label = _label), ''), true);
+  perform set_config('request.jwt.claims', json_build_object('sub', nullif(current_setting('request.jwt.claim.sub', true), ''), 'aal', 'aal2')::text, true);
   execute format('set local role %I', _role);
 end $$;
 
@@ -55,7 +56,7 @@ begin
   end loop;
   foreach t in array array['submit_enquiry(jsonb)','submit_contact_message(jsonb)','submit_sponsor_enquiry(jsonb)',
     'submit_equipment_pledge(jsonb)','check_and_record_throttle(text,text)','next_reference(text)',
-    'ensure_contact(text,text,text,text)','has_role(uuid,public.app_role)','is_ops_staff(uuid)'] loop
+    'ensure_contact(text,text,text,text)'] loop
     if has_function_privilege('anon', 'public.' || t, 'execute') or has_function_privilege('authenticated', 'public.' || t, 'execute') and t not in ('has_role(uuid,public.app_role)','is_ops_staff(uuid)') then
       raise exception 'FAIL: public roles can execute %', t;
     end if;

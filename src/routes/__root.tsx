@@ -14,6 +14,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { SkipLink } from "@/components/layout/skip-link";
+import { usePathname } from "@/hooks/use-pathname";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Button } from "@/components/ui/button";
@@ -125,6 +126,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // The staff area has its own frame: the public site's header and footer are not shown there.
+  const inStaffArea = usePathname().startsWith("/admin");
   return (
     <html lang="en">
       <head>
@@ -132,11 +135,11 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
-        <SiteHeader />
+        {inStaffArea ? null : <SiteHeader />}
         <main id="main" className="flex-1">
           {children}
         </main>
-        <SiteFooter />
+        {inStaffArea ? null : <SiteFooter />}
         <Scripts />
       </body>
     </html>
