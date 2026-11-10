@@ -67,6 +67,6 @@ Open:
 - [x] Draft SQL: supabase/drafts/b3_core.sql (not applied) — private role helpers, MFA (aal2) for all staff roles, notes/owner columns, audit log, safeguarding update rule, first super-admin snippet.
 - [ ] Review draft, apply to staging then production — awaiting owner approval.
 - [ ] Login, MFA, inbox screens — awaiting Claude's B3 patch.
-- [ ] Create first super-admin (emmanuelbright236@gmail.com) after signup.
+- [x] First super-admin assigned and verified on the live database (emmanuelbright236@gmail.com, 2026-11-10). First sign-in and MFA setup still need the owner's smoke test.
 
 - [x] B3 patch installed (Claude). Open: apply b3_hardening.sql (needs approval), turn off public sign-ups, confirm TOTP MFA, create first super-admin.
