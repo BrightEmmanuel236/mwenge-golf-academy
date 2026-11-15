@@ -1,0 +1,45 @@
+name: CI
+
+# Runs on every pull request into main. No secrets are needed or available to it (pull_request, not
+# pull_request_target), so a pull request from anyone cannot read your settings.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Fast and first: protected files and secrets (scripts/check-protected-files.mjs).
+      - name: Protected files and secrets guard
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: node scripts/check-protected-files.mjs
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install (exactly what bun.lock says)
+        run: bun install --frozen-lockfile
+
+      - name: Type-check
+        run: bunx tsc --noEmit
+
+      - name: Tests
+        run: bun run test
+
+      - name: Build
+        run: bun run build
